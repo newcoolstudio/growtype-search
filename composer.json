@@ -1,6 +1,6 @@
 {
-    "name": "newcool/growtype-video",
-    "description": "growtype-video - 1.0.0",
+    "name": "newcool/growtype-search",
+    "description": "growtype-search - 1.0.0",
     "type": "wordpress-plugin",
     "require": {
         "php": "^7.2"

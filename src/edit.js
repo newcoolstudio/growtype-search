@@ -58,7 +58,7 @@ export default function Edit({attributes, setAttributes}) {
             setAttributes({[attribute_key]: val})
         }
 
-        let shortcodeTag = '[growtype_video';
+        let shortcodeTag = '[growtype_search';
         Object.entries(attributes).map(function (element) {
             if (element[0] !== 'shortcode') {
                 let propertyKey = element[0];
@@ -88,7 +88,7 @@ export default function Edit({attributes, setAttributes}) {
     };
 
     if (Object.entries(attributes).length === 0 || attributes.shortcode === '') {
-        attributes.shortcode = '[growtype_video]'
+        attributes.shortcode = '[growtype_search]'
     }
 
     return (
@@ -96,7 +96,7 @@ export default function Edit({attributes, setAttributes}) {
             <InspectorControls key={'inspector'}>
                 <Panel>
                     <PanelBody
-                        title={__('Main settings', 'growtype-video')}
+                        title={__('Main settings', 'growtype-search')}
                         icon="admin-plugins"
                     >
                         <SelectControl
@@ -118,13 +118,13 @@ export default function Edit({attributes, setAttributes}) {
                             onChange={(val) => updateShortcode('video_type', val)}
                         />
                         <TextControl
-                            label={__('Video url', 'growtype-video')}
+                            label={__('Video url', 'growtype-search')}
                             help={'Demo video url: https://static.pexels.com/lib/videos/free-videos.mp4'}
                             onChange={(val) => updateShortcode('video_url', val)}
                             value={attributes.video_url}
                         />
                         <TextControl
-                            label={__('Cover url', 'growtype-video')}
+                            label={__('Cover url', 'growtype-search')}
                             onChange={(val) => updateShortcode('cover_url', val)}
                             value={attributes.cover_url}
                         />
@@ -148,7 +148,7 @@ export default function Edit({attributes, setAttributes}) {
                         />
                     </PanelBody>
                     <PanelBody
-                        title={__('Preview settings', 'growtype-video')}
+                        title={__('Preview settings', 'growtype-search')}
                         icon="admin-plugins"
                     >
                         <SelectControl
@@ -167,7 +167,7 @@ export default function Edit({attributes, setAttributes}) {
                             onChange={(val) => updateShortcode('video_fit', val)}
                         />
                         <TextControl
-                            label={__('Video height', 'growtype-video')}
+                            label={__('Video height', 'growtype-search')}
                             onChange={(val) => updateShortcode('video_height', val)}
                             value={attributes.video_height}
                         />
@@ -182,12 +182,12 @@ export default function Edit({attributes, setAttributes}) {
 
             <InspectorAdvancedControls>
                 <TextControl
-                    label={__('Parent class', 'growtype-video')}
+                    label={__('Parent class', 'growtype-search')}
                     onChange={(val) => updateShortcode('parent_class', val)}
                     value={attributes.id}
                 />
                 <TextControl
-                    label={__('Parent ID', 'growtype-video')}
+                    label={__('Parent ID', 'growtype-search')}
                     onChange={(val) => updateShortcode('parent_id', val)}
                     value={attributes.id}
                 />
@@ -199,7 +199,7 @@ export default function Edit({attributes, setAttributes}) {
                     className="components-placeholder__label"
                 >
                     <Icon icon={shortcode}/>
-                    {__('Growtype video shortcode')}
+                    {__('Growtype Search shortcode')}
                 </label>
                 <PlainText
                     className="blocks-shortcode__textarea"

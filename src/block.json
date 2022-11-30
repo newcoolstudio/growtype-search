@@ -1,9 +1,9 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 2,
-  "name": "growtype/video",
+  "name": "growtype/search",
   "version": "0.1.0",
-  "title": "Growtype Video",
+  "title": "Growtype Search",
   "category": "text",
   "icon": "flag",
   "description": "Display video in advanced way.",
@@ -57,7 +57,7 @@
       "full"
     ]
   },
-  "textdomain": "growtype-video",
+  "textdomain": "growtype-search",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css"

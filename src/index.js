@@ -43,7 +43,7 @@ registerBlockType(metadata.name, {
      */
     example: {
         attributes: {
-            shortcode: 'Growtype video',
+            shortcode: 'Growtype Search',
         },
     },
     /**

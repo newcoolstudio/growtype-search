@@ -1,0 +1,57 @@
+.growtype-search-results {
+  padding: 20px;
+  background: white;
+  margin-top: 10px;
+  border-radius: 5px;
+  overflow: scroll;
+  max-height: 90vh;
+  @include bp-phone-xl() {
+    padding: 10px;
+    margin-top: 5px;
+    max-height: 82vh;
+  }
+
+  .growtype-search-result {
+    margin-top: 15px;
+    display: inline-block;
+    width: 100%;
+    border-top: 1px solid whitesmoke;
+    padding-top: 20px;
+
+    &:first-child {
+      border: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .title {
+      font-size: 16px;
+      padding-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .content {
+      font-size: 14px;
+    }
+
+    .growtype-search-results-content-inner {
+      display: flex;
+    }
+
+    .growtype-search-result-img {
+      margin-right: 15px;
+      width: 100%;
+      max-width: 80px;
+      max-height: 50px;
+
+      .img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .growtype-search-result-content {
+
+    }
+  }
+}
