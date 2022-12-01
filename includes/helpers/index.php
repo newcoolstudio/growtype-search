@@ -66,7 +66,7 @@ function growtype_search_get_post_types()
 {
     $posts = get_theme_mod('growtype_search_post_types_enabled');
 
-    if (in_array('all', $posts)) {
+    if (empty($posts) || in_array('all', $posts)) {
         $posts = Growtype_Search_Customizer::get_available_post_types();
     }
 
