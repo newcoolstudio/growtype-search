@@ -11,9 +11,29 @@ class Growtype_Search_Customizer
     public function __construct()
     {
         $this->customizer_available_pages = $this->get_available_pages();
-        $this->customizer_available_post_types = $this->get_available_post_types();
+        $this->block_attributes = json_decode(file_get_contents(GROWTYPE_SEARCH_PATH . 'src/block.json'), true)["attributes"] ?? [];
 
         add_action('customize_register', array ($this, 'customizer_init'));
+
+        add_action('after_setup_theme', function () {
+            $this->customizer_available_post_types = $this->get_available_post_types();
+        });
+    }
+
+    /**
+     * @param $options
+     * @return array
+     * Extract correct form options
+     */
+    function format_block_attribute_options($options)
+    {
+        $attributes = [];
+
+        foreach ($options as $key => $attribute) {
+            $attributes[$attribute['value']] = $attribute["label"];
+        }
+
+        return $attributes;
     }
 
     /**
@@ -65,6 +85,18 @@ class Growtype_Search_Customizer
             $post_types[$key] = $post_type;
         }
 
+        if (class_exists('Growtype_Extended_Cpt')) {
+            $Growtype_Extended_Cpt = new Growtype_Extended_Cpt();
+
+            $active_pt = $Growtype_Extended_Cpt->get_active_post_types();
+
+            if (!empty($active_pt)) {
+                foreach ($active_pt as $pt) {
+                    $post_types[$pt['value']] = $pt['label'];
+                }
+            }
+        }
+
         return $post_types;
     }
 
@@ -83,16 +115,16 @@ class Growtype_Search_Customizer
         /**
          *
          */
-        $wp_customize->add_setting('growtype_search_enabled',
+        $wp_customize->add_setting('growtype_search_disabled',
             array (
-                'default' => 1,
+                'default' => 0,
                 'transport' => 'refresh',
             )
         );
 
-        $wp_customize->add_control('growtype_search_enabled',
+        $wp_customize->add_control('growtype_search_disabled',
             array (
-                'label' => esc_html__('Enabled'),
+                'label' => __('Disable search', 'growtype-search'),
                 'type' => 'checkbox',
                 'description' => __('Enable/disable search.', 'growtype-search'),
                 'section' => 'growtype_search',
@@ -102,31 +134,27 @@ class Growtype_Search_Customizer
         /**
          * Search style
          */
-        $wp_customize->add_setting('growtype_search_style',
+        $wp_customize->add_setting('growtype_search_type',
             array (
                 'default' => 'fixed',
                 'transport' => 'refresh',
             )
         );
 
-        $wp_customize->add_control('growtype_search_style',
+        $wp_customize->add_control('growtype_search_type',
             array (
-                'label' => __('Search Style', 'growtype-search'),
-                'description' => esc_html__('Choose search style', 'growtype-search'),
+                'label' => __('Search Type', 'growtype-search'),
+                'description' => esc_html__('Choose search type', 'growtype-search'),
                 'section' => 'growtype_search',
                 'type' => 'select',
-                'default' => 'inline',
-                'choices' => array (
-                    'inline' => __('Inline', 'growtype'),
-                    'fixed' => __('Fixed', 'growtype')
-                )
+                'choices' => $this->format_block_attribute_options($this->block_attributes['search_type']['options']),
             )
         );
 
         /**
          * Search post types
          */
-        $wp_customize->add_setting('growtype_search_post_types_enabled',
+        $wp_customize->add_setting('growtype_search_post_types_included',
             array (
                 'default' => 'all',
                 'transport' => 'refresh',
@@ -136,7 +164,7 @@ class Growtype_Search_Customizer
         $wp_customize->add_control(
             new Growtype_Search_Multiple_Select(
                 $wp_customize,
-                'growtype_search_post_types_enabled',
+                'growtype_search_post_types_included',
                 array (
                     'label' => __('Post types included', 'growtype'),
                     'description' => esc_html__('In which post types search should be conducted.', 'growtype'),
@@ -150,7 +178,7 @@ class Growtype_Search_Customizer
         /**
          * Search pages
          */
-        $wp_customize->add_setting('search_enabled_pages',
+        $wp_customize->add_setting('growtype_search_enabled_pages',
             array (
                 'default' => 'all',
                 'transport' => 'refresh',
@@ -159,14 +187,33 @@ class Growtype_Search_Customizer
 
         $wp_customize->add_control(
             new Growtype_Search_Multiple_Select(
-                $wp_customize, 'search_enabled_pages',
+                $wp_customize, 'growtype_search_enabled_pages',
                 array (
-                    'label' => __('Pages', 'growtype'),
-                    'description' => esc_html__('In which pages search available.', 'growtype'),
+                    'label' => __('Pages', 'growtype-search'),
+                    'description' => __('In which pages search available.', 'growtype-search'),
                     'section' => 'growtype_search',
                     'type' => 'select',
                     'choices' => array_merge(['all' => 'All'], $this->customizer_available_pages)
                 )
+            )
+        );
+
+        /**
+         * Btn open
+         */
+        $wp_customize->add_setting('growtype_search_btn_open',
+            array (
+                'default' => 0,
+                'transport' => 'refresh',
+            )
+        );
+
+        $wp_customize->add_control('growtype_search_btn_open',
+            array (
+                'label' => __('Button "Open Search" Enabled', 'growtype-search'),
+                'type' => 'checkbox',
+                'description' => __('Enable/disable search open button.', 'growtype-search'),
+                'section' => 'growtype_search',
             )
         );
 

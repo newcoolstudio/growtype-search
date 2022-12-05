@@ -3,7 +3,6 @@
 
   .growtype-search-form {
     position: relative;
-    margin-top: 20px;
   }
 
   .growtype-search-input {
@@ -93,5 +92,26 @@
         }
       }
     }
+  }
+}
+
+.container .alignfull.wp-block-group:where(.has-background) {
+  .growtype-search-inner {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.growtype-search-results-actions {
+  text-align: center;
+  padding-top: 30px;
+  display: none;
+
+  .btn-more {
+    padding: 15px 35px;
+    background: none;
+    border: 1px solid black;
+    border-radius: 10px;
+    color: black;
   }
 }

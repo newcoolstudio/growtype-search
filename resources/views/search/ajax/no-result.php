@@ -1,11 +1,10 @@
-<div class="growtype-search-results-content">
+<div class="growtype-search-results-no-results">
     <div class="title">
-        <?php echo __('Jūsų paieška - neatitiko jokių rezultatų.', 'growtype-search') ?>
+        <?php echo __('Your search did not match any results.', 'growtype-search') ?>
     </div>
     <div class="content">
-        - <?php echo __('Įsitikinkite, kad pasirinktas paieškos kriterijus.', 'growtype-search') ?><br>
-        - <?php echo __('Pabandykite kitus raktažodžius.', 'growtype-search') ?><br>
-        - <?php echo __('Pabandykite bendresnius raktažodžius.', 'growtype-search') ?><br>
-        - <?php echo __('Naudokite mažiau raktinių žodžių.', 'growtype-search') ?>
+        - <?php echo __('Try other keywords.', 'growtype-search') ?><br>
+        - <?php echo __('Try more general keywords.', 'growtype-search') ?><br>
+        - <?php echo __('Use fewer keywords.', 'growtype-search') ?>
     </div>
 </div>

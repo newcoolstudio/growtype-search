@@ -11,41 +11,44 @@
     "shortcode": {
       "type": "string",
       "source": "text",
-      "selector": "div"
+      "selector": "div",
+      "default": "[growtype_search]"
     },
-    "video_url": {
+    "search_type": {
+      "type": "string",
+      "default": "inline",
+      "options": [
+        {
+          "label": "Inline",
+          "value": "inline"
+        },
+        {
+          "label": "Fixed",
+          "value": "fixed"
+        }
+      ]
+    },
+    "post_types_included": {
       "type": "string",
       "default": ""
     },
-    "cover_url": {
-      "type": "string",
-      "default": ""
-    },
-    "video_height": {
-      "type": "string",
-      "default": "40%"
-    },
-    "video_type": {
-      "type": "string",
-      "default": "youtube"
-    },
-    "play_action": {
-      "type": "string",
-      "default": "load"
-    },
-    "video_fit": {
-      "type": "string",
-      "default": "cover"
-    },
-    "play_button": {
+    "search_on_load": {
       "type": "boolean",
       "default": false
     },
-    "parent_id": {
-      "type": "string",
+    "search_on_empty": {
+      "type": "boolean",
+      "default": false
+    },
+    "visible_results_amount": {
+      "type": "number",
       "default": ""
     },
-    "parent_class": {
+    "btn_open": {
+      "type": "boolean",
+      "default": true
+    },
+    "parent_id": {
       "type": "string",
       "default": ""
     }

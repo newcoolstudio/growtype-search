@@ -65,9 +65,7 @@ class Growtype_Search_Public
     {
         ?>
         <script type="text/javascript">
-            window.growtypeSearch = {
-                ajax: "<?php echo get_theme_mod('growtype_search_ajax_disabled') === true ? 'false' : 'true' ?>"
-            };
+            window.growtypeSearch = {};
         </script>
         <?php
     }
@@ -80,17 +78,6 @@ class Growtype_Search_Public
     public
     function enqueue_styles()
     {
-        /**
-         * This function is provided for demonstration purposes only.
-         *
-         * An instance of this class should be passed to the run() function
-         * defined in Growtype_Search_Loader as all of the hooks are defined
-         * in that particular class.
-         *
-         * The Growtype_Search_Loader will then create the relationship
-         * between the defined hooks and the functions defined in this
-         * class.
-         */
         wp_enqueue_style($this->growtype_search, GROWTYPE_SEARCH_URL_PUBLIC . 'styles/growtype-search.css', array (), $this->version, 'all');
     }
 
@@ -99,25 +86,18 @@ class Growtype_Search_Public
      *
      * @since    1.0.0
      */
-    public
-    function enqueue_scripts()
+    public function enqueue_scripts()
     {
-
-        /**
-         * This function is provided for demonstration purposes only.
-         *
-         * An instance of this class should be passed to the run() function
-         * defined in Growtype_Search_Loader as all of the hooks are defined
-         * in that particular class.
-         *
-         * The Growtype_Search_Loader will then create the relationship
-         * between the defined hooks and the functions defined in this
-         * class.
-         */
         wp_enqueue_script($this->growtype_search, GROWTYPE_SEARCH_URL_PUBLIC . 'scripts/growtype-search.js', array ('jquery'), $this->version, true);
 
+        $ajax_url = admin_url('admin-ajax.php');
+
+        if (class_exists('QTX_Translator')) {
+            $ajax_url = admin_url('admin-ajax.php' . '?lang=' . qtrans_getLanguage());
+        }
+
         wp_localize_script($this->growtype_search, 'growtype_search_ajax', array (
-            'url' => admin_url('admin-ajax.php'),
+            'url' => $ajax_url,
             'nonce' => wp_create_nonce('ajax-nonce'),
             'action' => self::GROWTYPE_SEARCH_AJAX_ACTION
         ));

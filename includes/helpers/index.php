@@ -1,6 +1,51 @@
 <?php
 
 /**
+ * @param $path
+ * @param null $data
+ * @return mixed
+ * Include view
+ */
+if (!function_exists('growtype_search_include_view')) {
+    function growtype_search_include_view($file_path, $variables = array (), $print = false)
+    {
+        $output = null;
+
+        $fallback_view = GROWTYPE_SEARCH_PATH . 'resources/views/' . str_replace('.', '/', $file_path) . '.php';
+        $child_blade_view = get_stylesheet_directory() . '/growtype-search/' . str_replace('.', '/', $file_path) . '.blade.php';
+        $child_view = get_stylesheet_directory() . '/growtype-search/' . str_replace('.', '/', $file_path) . '.php';
+
+        $template_path = $fallback_view;
+
+        if (file_exists($child_blade_view) && class_exists('App\template')) {
+            return App\template($child_blade_view, $variables);
+        } elseif (file_exists($child_view)) {
+            $template_path = $child_view;
+        }
+
+        if (file_exists($template_path)) {
+            // Extract the variables to a local namespace
+            extract($variables);
+
+            // Start output buffering
+            ob_start();
+
+            // Include the template file
+            include $template_path;
+
+            // End buffering and return its contents
+            $output = ob_get_clean();
+        }
+
+        if ($print) {
+            print $output;
+        }
+
+        return $output;
+    }
+}
+
+/**
  * @return string
  */
 function growtype_search_permalink()
@@ -21,10 +66,10 @@ function growtype_search_permalink()
  */
 function growtype_search_enabled()
 {
-    $search_enabled = get_theme_mod('search_enabled');
-    $search_enabled_pages = get_theme_mod('search_enabled_pages');
+    $search_disabled = get_theme_mod('growtype_search_disabled');
+    $search_enabled_pages = get_theme_mod('growtype_search_enabled_pages');
 
-    if ($search_enabled && !empty($search_enabled_pages)) {
+    if (!$search_disabled && !empty($search_enabled_pages)) {
         $search_enabled = false;
 
         if (page_is_among_enabled_pages($search_enabled_pages)) {
@@ -64,9 +109,9 @@ function growtype_search_render_svg($path)
  */
 function growtype_search_get_post_types()
 {
-    $posts = get_theme_mod('growtype_search_post_types_enabled');
+    $posts = get_theme_mod('growtype_search_post_types_included');
 
-    if (empty($posts) || in_array('all', $posts)) {
+    if (empty($posts) || (is_array($posts) && in_array('all', $posts))) {
         $posts = Growtype_Search_Customizer::get_available_post_types();
     }
 
@@ -78,13 +123,17 @@ function growtype_search_get_post_types()
  * @param $length
  * @return mixed|string
  */
-function growtype_search_get_limited_content($initial_content, $length = 125)
+function growtype_search_get_limited_content($initial_content, $length = 125, $html_remove = true)
 {
     if (empty($length)) {
         $length = apply_filters('growtype_search_limited_content_length', 125);
     }
 
     $content = $initial_content;
+
+    if ($html_remove) {
+        $content = strip_tags($content);
+    }
 
     if (strlen($initial_content) > $length) {
 
@@ -98,7 +147,7 @@ function growtype_search_get_limited_content($initial_content, $length = 125)
         $content = substr($content, 0, $length);
         $content = substr($content, 0, strripos($content, " "));
         $content = trim(preg_replace('/\s+/', ' ', $content));
-        $content = $content . '...';
+        $content = !empty($content) ? $content . '...' : '';
     }
 
     return $content;

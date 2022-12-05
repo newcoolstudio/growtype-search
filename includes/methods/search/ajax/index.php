@@ -10,9 +10,11 @@ function growtype_search_ajax_callback()
     }
 
     $search = isset($_POST['search']) ? $_POST['search'] : '';
+    $included_post_types = isset($_POST['included_post_types']) ? $_POST['included_post_types'] : 'all';
+    $visible_results_amount = isset($_POST['visible_results_amount']) ? $_POST['visible_results_amount'] : '';
 
     $args = array (
-        'post_type' => growtype_search_get_post_types(),
+        'post_type' => explode(',', $included_post_types),
         'post_status' => 'publish',
         'posts_per_page' => -1,
         's' => $search,
@@ -29,22 +31,23 @@ function growtype_search_ajax_callback()
             $featured_image = wp_get_attachment_image_src(get_post_thumbnail_id($post_id), 'medium');
             $featured_image = ($featured_image) ? $featured_image[0] : '';
 
-            include(GROWTYPE_SEARCH_PATH . 'resources/views/search/ajax/result.php');
+            $result = growtype_search_include_view('search.ajax.result', [
+                'post' => $post
+            ]);
 
+            echo apply_filters('growtype_search_result_render', $result, $post);
         endwhile;
 
         wp_reset_postdata();
     } else {
-        include(GROWTYPE_SEARCH_PATH . 'resources/views/search/ajax/no-result.php');
+        echo growtype_search_include_view('search.ajax.no-result');
     }
 
     $content = [
         'html' => ob_get_clean()
     ];
 
-    $result = json_encode($content);
-
-    echo $result;
+    echo json_encode($content);
 
     wp_die();
 }

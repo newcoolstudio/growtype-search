@@ -14,7 +14,7 @@ import {
     CustomSelectControl,
     SelectControl,
     ToggleControl,
-    __experimentalNumberControl as NumberControl
+    __experimentalNumberControl as NumberControl, RangeControl
 } from '@wordpress/components';
 
 /**
@@ -24,15 +24,17 @@ import {
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import {
-    PlainText,
-    useBlockProps,
-    InspectorControls,
-    InspectorAdvancedControls
+    PlainText, useBlockProps, InspectorControls, InspectorAdvancedControls
 } from '@wordpress/block-editor';
 
 import {useInstanceId} from '@wordpress/compose';
 
 import {Icon, shortcode} from '@wordpress/icons';
+
+import metadata from './block.json';
+
+import {useState, useEffect} from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -50,10 +52,32 @@ export default function Edit({attributes, setAttributes}) {
     const blockProps = useBlockProps();
     const instanceId = useInstanceId(Edit);
     const inputId = `blocks-shortcode-input-${instanceId}`;
+    const [settings, setSettings] = useState([]);
+
+    const requestSettings = async () => {
+        const settings = await apiFetch({path: '/growtype-search/v1/settings'});
+        setSettings(settings);
+        return;
+    };
+
+    function formatOptions(options) {
+        let formattedOptions = [];
+        Object.entries(options).map((option) => {
+            formattedOptions.push({label: option[1], value: option[0]});
+        })
+
+        return formattedOptions;
+    }
+
+    useEffect(() => {
+        requestSettings();
+    }, []);
 
     const updateShortcode = (attribute_key, val, inputType) => {
         if (inputType === 'custom') {
             setAttributes({[attribute_key]: val.selectedItem.value})
+        } else if (inputType === 'array') {
+            setAttributes({[attribute_key]: val.toString()})
         } else {
             setAttributes({[attribute_key]: val})
         }
@@ -76,6 +100,10 @@ export default function Edit({attributes, setAttributes}) {
                     propertyValue = propertyValue ? 'true' : 'false'
                 }
 
+                if (propertyKey === 'visible_results_amount') {
+                    propertyValue = propertyValue.toString()
+                }
+
                 if (propertyValue.length > 0) {
                     shortcodeTag += ' ' + propertyKey + '=' + '"' + propertyValue + '"'
                 }
@@ -91,125 +119,87 @@ export default function Edit({attributes, setAttributes}) {
         attributes.shortcode = '[growtype_search]'
     }
 
-    return (
-        <div {...blockProps}>
-            <InspectorControls key={'inspector'}>
-                <Panel>
-                    <PanelBody
-                        title={__('Main settings', 'growtype-search')}
-                        icon="admin-plugins"
-                    >
-                        <SelectControl
-                            label="Video type"
-                            options={[
-                                {
-                                    label: 'Youtube',
-                                    value: 'youtube',
-                                },
-                                {
-                                    label: 'Vimeo',
-                                    value: 'vimeo',
-                                },
-                                {
-                                    label: 'Html',
-                                    value: 'html',
-                                }
-                            ]}
-                            onChange={(val) => updateShortcode('video_type', val)}
-                        />
-                        <TextControl
-                            label={__('Video url', 'growtype-search')}
-                            help={'Demo video url: https://static.pexels.com/lib/videos/free-videos.mp4'}
-                            onChange={(val) => updateShortcode('video_url', val)}
-                            value={attributes.video_url}
-                        />
-                        <TextControl
-                            label={__('Cover url', 'growtype-search')}
-                            onChange={(val) => updateShortcode('cover_url', val)}
-                            value={attributes.cover_url}
-                        />
-                        <SelectControl
-                            label="Play action"
-                            options={[
-                                {
-                                    label: 'On page load',
-                                    value: 'load',
-                                },
-                                {
-                                    label: 'On mouseover',
-                                    value: 'mouseover',
-                                },
-                                {
-                                    label: 'On click',
-                                    value: 'click',
-                                }
-                            ]}
-                            onChange={(val) => updateShortcode('play_action', val)}
-                        />
-                    </PanelBody>
-                    <PanelBody
-                        title={__('Preview settings', 'growtype-search')}
-                        icon="admin-plugins"
-                    >
-                        <SelectControl
-                            label="Video fit"
-                            value={attributes.video_fit}
-                            options={[
-                                {
-                                    label: 'Cover',
-                                    value: 'cover',
-                                },
-                                {
-                                    label: 'Initial',
-                                    value: 'initial',
-                                }
-                            ]}
-                            onChange={(val) => updateShortcode('video_fit', val)}
-                        />
-                        <TextControl
-                            label={__('Video height', 'growtype-search')}
-                            onChange={(val) => updateShortcode('video_height', val)}
-                            value={attributes.video_height}
-                        />
-                        <ToggleControl
-                            label="Video play button"
-                            checked={attributes.play_button ? true : false}
-                            onChange={(val) => updateShortcode('play_button', val)}
-                        />
-                    </PanelBody>
-                </Panel>
-            </InspectorControls>
-
-            <InspectorAdvancedControls>
-                <TextControl
-                    label={__('Parent class', 'growtype-search')}
-                    onChange={(val) => updateShortcode('parent_class', val)}
-                    value={attributes.id}
-                />
-                <TextControl
-                    label={__('Parent ID', 'growtype-search')}
-                    onChange={(val) => updateShortcode('parent_id', val)}
-                    value={attributes.id}
-                />
-            </InspectorAdvancedControls>
-
-            <div {...useBlockProps({className: 'components-placeholder'})}>
-                <label
-                    htmlFor={inputId}
-                    className="components-placeholder__label"
+    return (<div {...blockProps}>
+        <InspectorControls key={'inspector'}>
+            <Panel>
+                <PanelBody
+                    title={__('Main settings', 'growtype-search')}
+                    icon="admin-plugins"
                 >
-                    <Icon icon={shortcode}/>
-                    {__('Growtype Search shortcode')}
-                </label>
-                <PlainText
-                    className="blocks-shortcode__textarea"
-                    id={inputId}
-                    value={attributes.shortcode}
-                    aria-label={__('Shortcode text')}
-                    placeholder={__('Write shortcode here…')}
-                    onChange={(val) => setAttributes({shortcode: val})}
-                />
-            </div>
+                    <SelectControl
+                        label="Search type"
+                        options={metadata['attributes']['search_type']['options']}
+                        onChange={(val) => updateShortcode('search_type', val)}
+                    />
+                    <ToggleControl
+                        className="block-editor-hooks__toggle-control"
+                        label={__('Button open')}
+                        checked={attributes.btn_open}
+                        onChange={(val) => updateShortcode('btn_open', val)}
+                        help={attributes.btn_open ? __('Button to open search is visible.') : __('Button to open search is hidden.')}
+                    />
+                    {
+                        settings['available_post_types'] ? <SelectControl
+                            multiple={true}
+                            label="Post types included in search"
+                            value={attributes.post_types_included ? attributes.post_types_included.split(',') : []}
+                            options={formatOptions(settings['available_post_types'])}
+                            onChange={(val) => updateShortcode('post_types_included', val, 'array')}
+                            style={{height: 'initial', overflow: 'scroll'}}
+                        /> : ''
+                    }
+                    <ToggleControl
+                        className="block-editor-hooks__toggle-control"
+                        label={__('Search on load')}
+                        checked={attributes.search_on_load}
+                        onChange={(val) => updateShortcode('search_on_load', val)}
+                        help={attributes.search_on_load ? __('Search with empty value on load.') : __('Do not do search on load.')}
+                    />
+                    <ToggleControl
+                        className="block-editor-hooks__toggle-control"
+                        label={__('Search on empty')}
+                        checked={attributes.search_on_empty}
+                        onChange={(val) => updateShortcode('search_on_empty', val)}
+                        help={attributes.search_on_empty ? __('Search with empty value.') : __('Do not do search when value is empty.')}
+                    />
+                    <RangeControl
+                        label={__('Visible results amount', 'growtype-search')}
+                        help={__('How many search results should be visible initially.', 'growtype-search')}
+                        value={
+                            attributes.visible_results_amount
+                        }
+                        onChange={(val) => updateShortcode('visible_results_amount', val)}
+                        min={1}
+                        max={20}
+                    />
+                </PanelBody>
+            </Panel>
+        </InspectorControls>
+
+        <InspectorAdvancedControls>
+            <TextControl
+                label={__('Parent ID', 'growtype-search')}
+                onChange={(val) => updateShortcode('parent_id', val)}
+                value={attributes.parent_id}
+            />
+        </InspectorAdvancedControls>
+
+        <div {...useBlockProps({className: 'components-placeholder'})}>
+            <label
+                htmlFor={inputId}
+                className="components-placeholder__label"
+            >
+                <Icon icon={shortcode}/>
+                {__('Growtype Search shortcode')}
+            </label>
+            <PlainText
+                className="blocks-shortcode__textarea"
+                id={inputId}
+                value={attributes.shortcode}
+                aria-label={__('Shortcode text')}
+                placeholder={__('Write shortcode here…')}
+                onChange={(val) => setAttributes({shortcode: val})}
+            />
         </div>
-    );
+    </div>);
 }
