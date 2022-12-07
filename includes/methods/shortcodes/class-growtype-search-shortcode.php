@@ -29,6 +29,7 @@ class Growtype_Search_Shortcode
             'search_on_load' => 'false',
             'visible_results_amount' => '',
             'search_on_empty' => 'false',
+            'search_input_placeholder' => __('Search...', 'growtype-search'),
         ), $atts));
 
         if (is_array($post_types_included)) {

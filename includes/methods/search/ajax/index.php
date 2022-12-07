@@ -5,13 +5,19 @@ add_action('wp_ajax_' . Growtype_Search_Public::GROWTYPE_SEARCH_AJAX_ACTION, 'gr
 
 function growtype_search_ajax_callback()
 {
-    if (!wp_verify_nonce($_POST['nonce'], 'ajax-nonce')) {
-        die ('Something went wrong');
+    if (!wp_verify_nonce($_REQUEST['nonce'], 'ajax-nonce')) {
+        die (__('Something went wrong', 'growtype-search'));
     }
 
-    $search = isset($_POST['search']) ? $_POST['search'] : '';
-    $included_post_types = isset($_POST['included_post_types']) ? $_POST['included_post_types'] : 'all';
-    $visible_results_amount = isset($_POST['visible_results_amount']) ? $_POST['visible_results_amount'] : '';
+    $search = isset($_REQUEST['search']) ? $_REQUEST['search'] : '';
+    $included_post_types = isset($_REQUEST['included_post_types']) ? $_REQUEST['included_post_types'] : 'all';
+    $visible_results_amount = isset($_REQUEST['visible_results_amount']) ? $_REQUEST['visible_results_amount'] : '';
+    $lang = isset($_REQUEST['lang']) ? $_REQUEST['lang'] : (class_exists('QTX_Translator') ? qtranxf_getLanguage() : 'en');
+
+    /**
+     * Update language domain
+     */
+    growtype_search_load_textdomain($lang);
 
     $args = array (
         'post_type' => explode(',', $included_post_types),

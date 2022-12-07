@@ -38,9 +38,9 @@ if (!defined('WPINC')) {
 define('GROWTYPE_SEARCH_VERSION', '1.0.0');
 
 /**
- * Plugin base name
+ * Plugin text domain
  */
-define('GROWTYPE_SEARCH_BASE_NAME', 'growtype-search');
+define('GROWTYPE_SEARCH_TEXT_DOMAIN', 'growtype-search');
 
 /**
  * Plugin dir path

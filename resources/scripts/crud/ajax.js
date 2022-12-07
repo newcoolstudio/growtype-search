@@ -105,7 +105,7 @@ function ajax() {
      *
      */
     function showMoreResults(form) {
-        form.closest('.growtype-search-wrapper').find('.growtype-search-results-actions .btn-more').click(function () {
+        form.closest('.growtype-search-wrapper').find('.growtype-search-results-actions .growtype-search-results-btn').click(function () {
             if ($(this).hasClass('is-active')) {
                 $(this).removeClass('is-active')
                 $(this).text($(this).attr('data-show-more'));

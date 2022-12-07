@@ -172,6 +172,12 @@ export default function Edit({attributes, setAttributes}) {
                         min={1}
                         max={20}
                     />
+                    <TextControl
+                        label={__('Search placeholder', 'growtype-search')}
+                        help={__('Enter search input placeholder.', 'growtype-search')}
+                        onChange={(val) => updateShortcode('search_input_placeholder', val)}
+                        value={attributes.search_input_placeholder}
+                    />
                 </PanelBody>
             </Panel>
         </InspectorControls>

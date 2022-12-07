@@ -44,6 +44,10 @@
       "type": "number",
       "default": ""
     },
+    "search_input_placeholder": {
+      "type": "string",
+      "default": ""
+    },
     "btn_open": {
       "type": "boolean",
       "default": true

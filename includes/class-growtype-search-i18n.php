@@ -34,9 +34,9 @@ class Growtype_Search_i18n
     public function load_plugin_textdomain()
     {
         load_plugin_textdomain(
-            'growtype-search',
+            GROWTYPE_SEARCH_TEXT_DOMAIN,
             false,
-            GROWTYPE_SEARCH_BASE_NAME . '/languages/'
+            GROWTYPE_SEARCH_TEXT_DOMAIN . '/languages/'
         );
     }
 }
