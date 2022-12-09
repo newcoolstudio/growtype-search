@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Growtype - Search\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-05 19:38+0000\n"
+"POT-Creation-Date: 2022-12-08 13:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: \n"
@@ -70,16 +70,28 @@ msgstr ""
 msgid "Pages"
 msgstr ""
 
+#: ../../../../../../packages/plugins/growtype-search/resources/views/search/form/index.php:12
+msgid "Search"
+msgstr ""
+
 #: ../../../../../../packages/plugins/growtype-search/includes/methods/customizer/index.php:146
 msgid "Search Type"
 msgstr ""
 
-#: ../../../../../../packages/plugins/growtype-search/resources/views/search/form/index.php:24
+#: ../../../../../../packages/plugins/growtype-search/includes/methods/shortcodes/class-growtype-search-shortcode.php:32
+msgid "Search..."
+msgstr ""
+
+#: ../../../../../../packages/plugins/growtype-search/resources/views/search/form/actions/index.php:2
 msgid "Show less"
 msgstr ""
 
-#: ../../../../../../packages/plugins/growtype-search/resources/views/search/form/index.php:24
+#: ../../../../../../packages/plugins/growtype-search/resources/views/search/form/actions/index.php:2
 msgid "Show more"
+msgstr ""
+
+#: ../../../../../../packages/plugins/growtype-search/includes/methods/search/ajax/index.php:9
+msgid "Something went wrong"
 msgstr ""
 
 #: ../../../../../../packages/plugins/growtype-search/resources/views/search/ajax/no-result.php:7

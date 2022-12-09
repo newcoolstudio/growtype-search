@@ -41,7 +41,6 @@
   .btn-growtype-search-submit {
     position: absolute;
     bottom: 0;
-    width: 40px;
     border: none;
     font-size: 28px;
     height: 39px;
@@ -56,10 +55,17 @@
     background-color: black;
     opacity: 0.8;
     transition: all 0.5s;
+    padding-left: 10px;
+    padding-right: 15px;
 
     &:hover {
       opacity: 1;
       transition: all 0.5s;
+    }
+
+    .e-label {
+      font-size: 16px;
+      margin-left: 5px;
     }
 
     i {
@@ -73,12 +79,29 @@
       path {
         fill: white;
       }
+    }
 
-      &:nth-child(2) {
+    .icon-search {
+      display: block;
+      max-width: 30px;
+    }
+
+    .icon-loading {
+      display: none;
+      max-width: 30px;
+    }
+  }
+
+  &.is-loading {
+    .btn-growtype-search-submit {
+      padding-left: 10px;
+      padding-right: 10px;
+
+      .e-label, .icon-search {
         display: none;
       }
 
-      &:nth-child(1) {
+      .icon-loading {
         display: block;
       }
     }

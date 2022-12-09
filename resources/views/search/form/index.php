@@ -1,14 +1,15 @@
 <div id="<?php echo $parent_id ?>" class="growtype-search-wrapper growtype-search-<?php echo $search_type ?>">
     <div class="growtype-search-inner">
         <?php if (!empty(get_theme_mod('growtype_search_intro_text'))) { ?>
-            <p class="e-label"><?php echo get_theme_mod('growtype_search_intro_text') ?></p>
+            <p class="e-title-intro"><?php echo get_theme_mod('growtype_search_intro_text') ?></p>
         <?php } ?>
 
         <form class="growtype-search-form" role="search" method="get" action="<?php echo growtype_search_permalink() ?>" data-post-types-included="<?php echo $post_types_included ?>">
             <input type="text" value="" name="s" class="growtype-search-input" placeholder="<?php echo $search_input_placeholder ?>"/>
             <button class="btn-growtype-search-submit" type="submit" value="Search">
-                <?php echo growtype_search_render_svg('images/search.svg') ?>
-                <?php echo growtype_search_render_svg('images/loader.svg') ?>
+                <span class="icon-search"><?php echo growtype_search_render_svg('images/search.svg') ?></span>
+                <span class="icon-loading"><?php echo growtype_search_render_svg('images/loader.svg') ?></span>
+                <span class="e-label"><?php echo __('Search', 'growtype-search') ?></span>
             </button>
         </form>
 

@@ -27,7 +27,7 @@
     padding-right: 15px;
   }
 
-  .e-label {
+  .e-title-intro {
     color: grey;
     margin-bottom: 8px;
     font-size: 14px;
@@ -76,20 +76,6 @@
 
       &::placeholder {
         color: #767676;
-      }
-    }
-  }
-
-  &.is-loading {
-    .btn-growtype-search-submit {
-      svg {
-        &:nth-child(1) {
-          display: none;
-        }
-
-        &:nth-child(2) {
-          display: block;
-        }
       }
     }
   }

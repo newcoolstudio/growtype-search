@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Growtype - Search\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-05 19:34+0000\n"
-"PO-Revision-Date: 2022-12-05 19:39+0000\n"
+"PO-Revision-Date: 2022-12-08 13:32+0000\n"
 "Last-Translator: \n"
 "Language-Team: Lithuanian\n"
 "Language: lt_LT\n"
@@ -64,23 +64,35 @@ msgstr ""
 
 #: ../../../../../../packages/plugins/growtype-search/includes/methods/customizer/index.php:250
 msgid "Intro Text"
-msgstr ""
+msgstr "Intro tekstas"
 
 #: ../../../../../../packages/plugins/growtype-search/includes/methods/customizer/index.php:192
 msgid "Pages"
-msgstr ""
+msgstr "Puslapiai"
+
+#: ../../../../../../packages/plugins/growtype-search/resources/views/search/form/index.php:12
+msgid "Search"
+msgstr "Ieškoti"
 
 #: ../../../../../../packages/plugins/growtype-search/includes/methods/customizer/index.php:146
 msgid "Search Type"
-msgstr ""
+msgstr "Paieškos tipas"
 
-#: ../../../../../../packages/plugins/growtype-search/resources/views/search/form/index.php:24
+#: ../../../../../../packages/plugins/growtype-search/includes/methods/shortcodes/class-growtype-search-shortcode.php:32
+msgid "Search..."
+msgstr "Ieškoti..."
+
+#: ../../../../../../packages/plugins/growtype-search/resources/views/search/form/actions/index.php:2
 msgid "Show less"
 msgstr "Rodyti mažiau"
 
-#: ../../../../../../packages/plugins/growtype-search/resources/views/search/form/index.php:24
+#: ../../../../../../packages/plugins/growtype-search/resources/views/search/form/actions/index.php:2
 msgid "Show more"
 msgstr "Rodyti daugiau"
+
+#: ../../../../../../packages/plugins/growtype-search/includes/methods/search/ajax/index.php:9
+msgid "Something went wrong"
+msgstr "Klaida. Bandykite dar kartą."
 
 #: ../../../../../../packages/plugins/growtype-search/resources/views/search/ajax/no-result.php:7
 msgid "Try more general keywords."
