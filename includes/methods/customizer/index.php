@@ -156,7 +156,7 @@ class Growtype_Search_Customizer
          */
         $wp_customize->add_setting('growtype_search_post_types_included',
             array (
-                'default' => 'all',
+                'default' => 'any',
                 'transport' => 'refresh',
             )
         );
@@ -170,7 +170,7 @@ class Growtype_Search_Customizer
                     'description' => esc_html__('In which post types search should be conducted.', 'growtype'),
                     'section' => 'growtype_search',
                     'type' => 'select',
-                    'choices' => array_merge(['all' => 'All'], $this->customizer_available_post_types)
+                    'choices' => array_merge(['any' => 'Any'], $this->customizer_available_post_types)
                 )
             )
         );

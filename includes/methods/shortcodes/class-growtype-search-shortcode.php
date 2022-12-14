@@ -23,7 +23,7 @@ class Growtype_Search_Shortcode
 
         extract(shortcode_atts(array (
             'search_type' => !empty(get_theme_mod('growtype_search_type')) ? get_theme_mod('growtype_search_type') : 'inline',
-            'btn_open' => !empty(get_theme_mod('growtype_search_btn_open')) ? 'true' : 'false',
+            'btn_open' => !empty(get_theme_mod('growtype_search_btn_open')) ? 'true' : (get_theme_mod('growtype_search_type') === 'fixed' ? 'true' : 'false'),
             'post_types_included' => !empty(get_theme_mod('growtype_search_post_types_included')) ? get_theme_mod('growtype_search_post_types_included') : 'all',
             'parent_id' => md5(uniqid(rand(), true)),
             'search_on_load' => 'false',
