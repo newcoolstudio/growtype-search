@@ -17,7 +17,9 @@ function growtype_search_ajax_callback()
     /**
      * Update language domain
      */
-    growtype_search_load_textdomain($lang);
+    if (function_exists('qtranxf_getLanguage')) {
+        growtype_search_load_textdomain($lang);
+    }
 
     $args = array (
         'post_type' => explode(',', $included_post_types),

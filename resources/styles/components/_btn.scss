@@ -26,6 +26,7 @@
     right: 20px;
     transition: all 0.5s;
     opacity: 0.8;
+    line-height: 18px;
 
     svg {
       width: 100%;
@@ -91,7 +92,7 @@
       display: none;
       max-width: 30px;
       position: relative;
-      top: 4px;
+      top: 0px;
     }
   }
 

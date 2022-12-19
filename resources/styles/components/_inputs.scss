@@ -1,0 +1,15 @@
+.growtype-search-wrapper {
+  input.growtype-search-input {
+    min-height: 56px;
+    width: 100%;
+    border: 1px solid #f0f0f0;
+    border-radius: 5px;
+    padding: 10px 15px;
+    padding-left: 15px!important;
+    padding-right: 140px!important;
+
+    &.is-error {
+      border: 2px solid red;
+    }
+  }
+}

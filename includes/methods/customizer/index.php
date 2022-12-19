@@ -86,15 +86,20 @@ class Growtype_Search_Customizer
         }
 
         if (class_exists('Growtype_Extended_Cpt')) {
-            $Growtype_Extended_Cpt = new Growtype_Extended_Cpt();
-
-            $active_pt = $Growtype_Extended_Cpt->get_active_post_types();
+            $active_pt = Growtype_Extended_Cpt::get_active_post_types();
 
             if (!empty($active_pt)) {
                 foreach ($active_pt as $pt) {
                     $post_types[$pt['value']] = $pt['label'];
                 }
             }
+        }
+
+        /**
+         * WooCommerce
+         */
+        if (class_exists('WooCommerce') && !in_array('product', $post_types)) {
+            $post_types['product'] = 'product';
         }
 
         return $post_types;
@@ -136,7 +141,7 @@ class Growtype_Search_Customizer
          */
         $wp_customize->add_setting('growtype_search_type',
             array (
-                'default' => 'fixed',
+                'default' => 'inline',
                 'transport' => 'refresh',
             )
         );

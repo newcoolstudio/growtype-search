@@ -32,74 +32,82 @@ if (!function_exists('growtype_search_include_view')) {
 /**
  * @return string
  */
-function growtype_search_permalink()
-{
-    if (class_exists('woocommerce')) {
-        if (is_search() && !is_shop()) {
-            return home_url('/');
+if (!function_exists('growtype_search_permalink')) {
+    function growtype_search_permalink()
+    {
+        if (class_exists('woocommerce')) {
+            if (is_search() && !is_shop()) {
+                return home_url('/');
+            }
+
+            return get_permalink(wc_get_page_id('shop'));
         }
 
-        return get_permalink(wc_get_page_id('shop'));
+        return get_permalink();
     }
-
-    return get_permalink();
 }
 
 /**
  * @return bool
  */
-function growtype_search_enabled()
-{
-    $search_disabled = get_theme_mod('growtype_search_disabled');
-    $search_enabled_pages = get_theme_mod('growtype_search_enabled_pages');
+if (!function_exists('growtype_search_enabled')) {
+    function growtype_search_enabled()
+    {
+        $search_disabled = get_theme_mod('growtype_search_disabled');
+        $search_enabled_pages = get_theme_mod('growtype_search_enabled_pages');
 
-    if (!$search_disabled && !empty($search_enabled_pages)) {
-        $search_enabled = false;
+        if (!$search_disabled && !empty($search_enabled_pages)) {
+            $search_enabled = false;
 
-        if (page_is_among_enabled_pages($search_enabled_pages)) {
-            $search_enabled = true;
+            if (page_is_among_enabled_pages($search_enabled_pages)) {
+                $search_enabled = true;
+            }
         }
-    }
 
-    return $search_enabled;
+        return $search_enabled;
+    }
 }
 
 /**
  * @param $path
  * @return false|string
  */
-function growtype_search_render_svg($path)
-{
-    $url = GROWTYPE_SEARCH_URL_PUBLIC . $path;
+if (!function_exists('growtype_search_render_svg')) {
+    function growtype_search_render_svg($path)
+    {
+        $url = GROWTYPE_SEARCH_URL_PUBLIC . $path;
 
-    $arrContextOptions = [
-        "ssl" => array (
-            "verify_peer" => false,
-            "verify_peer_name" => false,
-        ),
-    ];
+        $arrContextOptions = [
+            "ssl" => array (
+                "verify_peer" => false,
+                "verify_peer_name" => false,
+            ),
+        ];
 
-    $response = file_get_contents(
-        $url,
-        false,
-        stream_context_create($arrContextOptions)
-    );
+        $response = file_get_contents(
+            $url,
+            false,
+            stream_context_create($arrContextOptions)
+        );
 
-    return $response;
+        return $response;
+    }
 }
 
 /**
  * @return mixed
  */
-function growtype_search_get_post_types()
-{
-    $posts = get_theme_mod('growtype_search_post_types_included');
+if (!function_exists('growtype_search_get_post_types')) {
+    function growtype_search_get_post_types()
+    {
+        $posts = get_theme_mod('growtype_search_post_types_included');
 
-    if (empty($posts) || (is_array($posts) && in_array('all', $posts))) {
-        $posts = Growtype_Search_Customizer::get_available_post_types();
+        if (empty($posts) || (is_array($posts) && in_array('all', $posts))) {
+            $posts = Growtype_Search_Customizer::get_available_post_types();
+        }
+
+        return $posts;
     }
-
-    return $posts;
 }
 
 /**
@@ -107,34 +115,36 @@ function growtype_search_get_post_types()
  * @param $length
  * @return mixed|string
  */
-function growtype_search_get_limited_content($initial_content, $length = 125, $html_remove = true)
-{
-    if (empty($length)) {
-        $length = apply_filters('growtype_search_limited_content_length', 125);
-    }
+if (!function_exists('growtype_search_get_limited_content')) {
+    function growtype_search_get_limited_content($initial_content, $length = 125, $html_remove = true)
+    {
+        if (empty($length)) {
+            $length = apply_filters('growtype_search_limited_content_length', 125);
+        }
 
-    $content = $initial_content;
+        $content = $initial_content;
 
-    if ($html_remove) {
-        $content = strip_tags($content);
-    }
-
-    if (strlen($initial_content) > $length) {
-
-        $removed_content = str_replace(substr($content, 0, $length), '', $content);
-
-        if (preg_match("/<[^<]+>/", $removed_content, $m) != 0) {
-            $content = strip_shortcodes($content);
+        if ($html_remove) {
             $content = strip_tags($content);
         }
 
-        $content = substr($content, 0, $length);
-        $content = substr($content, 0, strripos($content, " "));
-        $content = trim(preg_replace('/\s+/', ' ', $content));
-        $content = !empty($content) ? $content . '...' : '';
-    }
+        if (strlen($initial_content) > $length) {
 
-    return $content;
+            $removed_content = str_replace(substr($content, 0, $length), '', $content);
+
+            if (preg_match("/<[^<]+>/", $removed_content, $m) != 0) {
+                $content = strip_shortcodes($content);
+                $content = strip_tags($content);
+            }
+
+            $content = substr($content, 0, $length);
+            $content = substr($content, 0, strripos($content, " "));
+            $content = trim(preg_replace('/\s+/', ' ', $content));
+            $content = !empty($content) ? $content . '...' : '';
+        }
+
+        return $content;
+    }
 }
 
 /**
@@ -143,6 +153,30 @@ function growtype_search_get_limited_content($initial_content, $length = 125, $h
 if (!function_exists('growtype_search_load_textdomain')) {
     function growtype_search_load_textdomain($lang)
     {
-        load_textdomain('growtype-search', GROWTYPE_SEARCH_PATH . 'languages/growtype-search-' . $lang . '_LT.mo');
+        global $q_config;
+
+        if (isset($q_config['locale'][$lang])) {
+            load_textdomain('growtype-search', GROWTYPE_SEARCH_PATH . 'languages/growtype-search-' . $q_config['locale'][$lang] . '.mo');
+        }
+    }
+}
+
+/**
+ * Growtype Search Result Content
+ */
+if (!function_exists('growtype_search_result_content')) {
+    function growtype_search_result_content($post)
+    {
+        $post_title = $post->post_title;
+        $post_content = $post->post_content;
+
+        if (!empty($post->post_excerpt)) {
+            $post_content = $post->post_excerpt;
+        }
+
+        ?>
+        <div class="title"><?php echo $post_title ?></div>
+        <div class="content"><?php echo growtype_search_get_limited_content($post_content) ?></div>
+        <?php
     }
 }

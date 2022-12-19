@@ -93,7 +93,7 @@ class Growtype_Search_Public
         $ajax_url = admin_url('admin-ajax.php');
 
         if (class_exists('QTX_Translator')) {
-            $ajax_url = admin_url('admin-ajax.php' . '?lang=' . qtrans_getLanguage());
+            $ajax_url = admin_url('admin-ajax.php' . '?lang=' . qtranxf_getLanguage());
         }
 
         wp_localize_script($this->growtype_search, 'growtype_search_ajax', array (
