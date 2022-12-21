@@ -26,7 +26,7 @@ class Growtype_Search_Multiple_Select extends WP_Customize_Control
             <select <?php $this->link(); ?> multiple="multiple" style="height: 100%;">
                 <?php
                 foreach ($this->choices as $value => $label) {
-                    $selected = (in_array($value, $this->value())) ? selected(1, 1, false) : '';
+                    $selected = is_array($this->value()) && in_array($value, $this->value()) ? selected(1, 1, false) : '';
 
                     if (empty($this->value())) {
                         $selected = isset($this->default) && $value === $this->default ? selected(1, 1, false) : '';
