@@ -3,9 +3,9 @@ msgstr ""
 "Project-Id-Version: Growtype - Search\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-05 19:34+0000\n"
-"PO-Revision-Date: 2022-12-08 13:32+0000\n"
+"PO-Revision-Date: 2022-12-22 09:05+0000\n"
 "Last-Translator: \n"
-"Language-Team: Lithuanian\n"
+"Language-Team: Lietuvių kalba\n"
 "Language: lt_LT\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 "
 "&&(n%100<10||n%100 >= 20)? 1 : 2);\n"
@@ -18,49 +18,49 @@ msgstr ""
 
 #. Description of the plugin
 msgid "Advanced search functionality for modern websites."
-msgstr ""
+msgstr "Išplėstinė šiuolaikinių svetainių paieškos funkcija."
 
 #: ../../../../../../packages/plugins/growtype-search/includes/methods/customizer/index.php:213
 msgid "Button \"Open Search\" Enabled"
-msgstr ""
+msgstr "Mygtukas „Atidaryti paiešką“ įjungtas"
 
 #: ../../../../../../packages/plugins/growtype-search/includes/methods/customizer/index.php:147
 msgid "Choose search type"
-msgstr ""
+msgstr "Pasirinkite paieškos tipą"
 
 #: ../../../../../../packages/plugins/growtype-search/includes/methods/customizer/index.php:127
 msgid "Disable search"
-msgstr ""
+msgstr "Išjungti paiešką"
 
 #: ../../../../../../packages/plugins/growtype-search/includes/methods/customizer/index.php:234
 msgid "Enable/disable ajax search."
-msgstr ""
+msgstr "Įjungti / išjungti ajax paiešką."
 
 #: ../../../../../../packages/plugins/growtype-search/includes/methods/customizer/index.php:215
 msgid "Enable/disable search open button."
-msgstr ""
+msgstr "Įjungti / išjungti paieškos atidarymo mygtuką."
 
 #: ../../../../../../packages/plugins/growtype-search/includes/methods/customizer/index.php:129
 msgid "Enable/disable search."
-msgstr ""
+msgstr "Įjungti / išjungti paiešką."
 
 #. Author of the plugin
 msgid "Growtype"
-msgstr ""
+msgstr "Augimo tipas"
 
 #. Name of the plugin
 #: ../../../../../../packages/plugins/growtype-search/includes/methods/customizer/index.php:111
 msgid "Growtype - Search"
-msgstr ""
+msgstr "Augimo tipas – paieška"
 
 #. URI of the plugin
 #. Author URI of the plugin
 msgid "http://growtype.com/"
-msgstr ""
+msgstr "http://growtype.com/"
 
 #: ../../../../../../packages/plugins/growtype-search/includes/methods/customizer/index.php:193
 msgid "In which pages search available."
-msgstr ""
+msgstr "Kuriuose puslapiuose galima ieškoti."
 
 #: ../../../../../../packages/plugins/growtype-search/includes/methods/customizer/index.php:250
 msgid "Intro Text"
@@ -104,7 +104,7 @@ msgstr "Pabandykite kitus raktinius žodžius."
 
 #: ../../../../../../packages/plugins/growtype-search/resources/views/search/ajax/no-result.php:8
 msgid "Use fewer keywords."
-msgstr "Naudokite mažiau raktiniu žodžių."
+msgstr "Naudokite mažiau raktinių žodžių."
 
 #: ../../../../../../packages/plugins/growtype-search/resources/views/search/ajax/no-result.php:3
 msgid "Your search did not match any results."

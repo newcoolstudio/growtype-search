@@ -53,6 +53,13 @@ function ajax() {
         form.closest('.growtype-search-wrapper').find('.growtype-search-results').fadeOut();
         form.closest('.growtype-search-wrapper').find('.growtype-search-results-actions').fadeOut();
 
+        /**
+         * Ga send search value
+         */
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'search', {'event_category': 'product_search', 'event_label': searchInputVal});
+        }
+
         $.ajax({
             type: "post",
             context: this,
