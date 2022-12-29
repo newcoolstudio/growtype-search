@@ -57,7 +57,7 @@ function ajax() {
          * Ga send search value
          */
         if (typeof gtag !== 'undefined') {
-            gtag('event', 'search', {'event_category': 'product_search', 'event_label': searchInputVal});
+            gtag('event', 'search', {'event_category': 'search', 'event_label': searchInputVal});
         }
 
         $.ajax({
