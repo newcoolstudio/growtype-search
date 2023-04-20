@@ -10,7 +10,7 @@ function growtype_search_ajax_callback()
     }
 
     $search = isset($_REQUEST['search']) ? $_REQUEST['search'] : '';
-    $included_post_types = isset($_REQUEST['included_post_types']) ? $_REQUEST['included_post_types'] : 'any';
+    $included_post_types = growtype_search_get_post_types();
     $visible_results_amount = isset($_REQUEST['visible_results_amount']) ? $_REQUEST['visible_results_amount'] : '';
     $lang = isset($_REQUEST['lang']) ? $_REQUEST['lang'] : (class_exists('QTX_Translator') ? qtranxf_getLanguage() : 'en');
 
@@ -22,7 +22,7 @@ function growtype_search_ajax_callback()
     }
 
     $args = array (
-        'post_type' => explode(',', $included_post_types),
+        'post_type' => $included_post_types,
         'post_status' => 'publish',
         'posts_per_page' => -1,
         's' => $search,

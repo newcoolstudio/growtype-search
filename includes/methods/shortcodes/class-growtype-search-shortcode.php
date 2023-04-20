@@ -7,40 +7,43 @@ class Growtype_Search_Shortcode
 {
     public function __construct()
     {
+        $this->search_type = !empty(get_theme_mod('growtype_search_type')) ? get_theme_mod('growtype_search_type') : 'inline';
+
         if (!is_admin() && !wp_is_json_request()) {
-            add_shortcode('growtype_search', array ($this, 'growtype_search_shortcode'));
+            add_shortcode('growtype_search_btn', array ($this, 'growtype_search_btn_shortcode'));
+
+            add_shortcode('growtype_search_form', array ($this, 'growtype_search_form_shortcode'));
+
+            add_action('growtype_footer_before_open', array ($this, 'growtype_search_add_body_content'));
+        }
+    }
+
+    function growtype_search_add_body_content()
+    {
+        if ($this->search_type === 'fixed') {
+            echo do_shortcode('[growtype_search_form]');
         }
     }
 
     /**
      *
      */
-    function growtype_search_shortcode($atts)
+    function growtype_search_form_shortcode($atts)
     {
         if (get_theme_mod('growtype_search_disabled')) {
             return '';
         }
 
         extract(shortcode_atts(array (
-            'search_type' => !empty(get_theme_mod('growtype_search_type')) ? get_theme_mod('growtype_search_type') : 'inline',
-            'btn_open' => !empty(get_theme_mod('growtype_search_btn_open')) ? 'true' : (get_theme_mod('growtype_search_type') === 'fixed' ? 'true' : 'false'),
-            'post_types_included' => !empty(get_theme_mod('growtype_search_post_types_included')) ? get_theme_mod('growtype_search_post_types_included') : 'all',
+            'search_type' => $this->search_type,
             'parent_id' => md5(uniqid(rand(), true)),
+            'search_input_placeholder' => __('Search...', 'growtype-search'),
             'search_on_load' => 'false',
             'visible_results_amount' => '',
             'search_on_empty' => 'false',
-            'search_input_placeholder' => __('Search...', 'growtype-search'),
         ), $atts));
 
-        if (is_array($post_types_included)) {
-            $post_types_included = implode(',', $post_types_included);
-        }
-
         ob_start();
-
-        if ($btn_open === 'true') {
-            include GROWTYPE_SEARCH_PATH . 'resources/views/search/trigger/index.php';
-        }
 
         include GROWTYPE_SEARCH_PATH . 'resources/views/search/form/index.php';
 
@@ -67,6 +70,17 @@ class Growtype_Search_Shortcode
             </script>
             <?php
         });
+
+        return $content;
+    }
+
+    function growtype_search_btn_shortcode()
+    {
+        ob_start();
+
+        include GROWTYPE_SEARCH_PATH . 'resources/views/search/trigger/index.php';
+
+        $content = ob_get_clean();
 
         return $content;
     }

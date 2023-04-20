@@ -33,7 +33,6 @@ function ajax() {
     function ajax_search(form, settings = null) {
         let searchInput = form.find('.growtype-search-input');
         let searchInputVal = searchInput.val();
-        let includedPostTypes = form.attr('data-post-types-included');
 
         let hasError = false;
         if (searchOnEmptyInput) {
@@ -67,7 +66,6 @@ function ajax() {
             url: growtype_search_ajax.url,
             data: {
                 action: growtype_search_ajax.action,
-                included_post_types: includedPostTypes,
                 nonce: growtype_search_ajax.nonce,
                 search: searchInputVal,
                 visible_results_amount: settings['static']['visible_results_amount'] ?? '',

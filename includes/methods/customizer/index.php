@@ -204,25 +204,6 @@ class Growtype_Search_Customizer
         );
 
         /**
-         * Btn open
-         */
-        $wp_customize->add_setting('growtype_search_btn_open',
-            array (
-                'default' => 0,
-                'transport' => 'refresh',
-            )
-        );
-
-        $wp_customize->add_control('growtype_search_btn_open',
-            array (
-                'label' => __('Button "Open Search" Enabled', 'growtype-search'),
-                'type' => 'checkbox',
-                'description' => __('Enable/disable search open button.', 'growtype-search'),
-                'section' => 'growtype_search',
-            )
-        );
-
-        /**
          * Ajax search
          */
         $wp_customize->add_setting('growtype_search_ajax_disabled',
