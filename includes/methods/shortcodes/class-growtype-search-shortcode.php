@@ -41,6 +41,7 @@ class Growtype_Search_Shortcode
             'search_on_load' => 'false',
             'visible_results_amount' => '',
             'search_on_empty' => 'false',
+            'post_types_included' => [],
         ), $atts));
 
         ob_start();
@@ -55,6 +56,7 @@ class Growtype_Search_Shortcode
                 'search_on_load' => $search_on_load,
                 'visible_results_amount' => $visible_results_amount,
                 'search_on_empty' => $search_on_empty,
+                'post_types_included' => $post_types_included,
             ]
         ];
 

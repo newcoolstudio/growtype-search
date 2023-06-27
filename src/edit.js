@@ -82,7 +82,7 @@ export default function Edit({attributes, setAttributes}) {
             setAttributes({[attribute_key]: val})
         }
 
-        let shortcodeTag = '[growtype_search';
+        let shortcodeTag = '[growtype_search_form';
         Object.entries(attributes).map(function (element) {
             if (element[0] !== 'shortcode') {
                 let propertyKey = element[0];
@@ -116,7 +116,7 @@ export default function Edit({attributes, setAttributes}) {
     };
 
     if (Object.entries(attributes).length === 0 || attributes.shortcode === '') {
-        attributes.shortcode = '[growtype_search]'
+        attributes.shortcode = '[growtype_search_form]'
     }
 
     return (<div {...blockProps}>

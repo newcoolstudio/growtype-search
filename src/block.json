@@ -12,7 +12,7 @@
       "type": "string",
       "source": "text",
       "selector": "div",
-      "default": "[growtype_search]"
+      "default": "[growtype_search_form]"
     },
     "search_type": {
       "type": "string",

@@ -68,7 +68,7 @@ function ajax() {
                 action: growtype_search_ajax.action,
                 nonce: growtype_search_ajax.nonce,
                 search: searchInputVal,
-                visible_results_amount: settings['static']['visible_results_amount'] ?? '',
+                settings_static: settings['static'],
             },
             beforeSend() {
                 $('.growtype-search-wrapper').addClass('is-loading');

@@ -10,9 +10,10 @@ function growtype_search_ajax_callback()
     }
 
     $search = isset($_REQUEST['search']) ? $_REQUEST['search'] : '';
-    $included_post_types = growtype_search_get_post_types();
-    $visible_results_amount = isset($_REQUEST['visible_results_amount']) ? $_REQUEST['visible_results_amount'] : '';
+    $settings_static = isset($_REQUEST['settings_static']) ? $_REQUEST['settings_static'] : [];
     $lang = isset($_REQUEST['lang']) ? $_REQUEST['lang'] : (class_exists('QTX_Translator') ? qtranxf_getLanguage() : 'en');
+
+    $included_post_types = isset($settings_static['post_types_included']) && !empty($settings_static['post_types_included']) ? explode(',', $settings_static['post_types_included']) : growtype_search_get_post_types();
 
     /**
      * Update language domain
