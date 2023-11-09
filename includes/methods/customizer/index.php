@@ -204,6 +204,25 @@ class Growtype_Search_Customizer
         );
 
         /**
+         * Search results
+         */
+        $wp_customize->add_setting('growtype_search_show_results_in_modal',
+            array (
+                'default' => 0,
+                'transport' => 'refresh',
+            )
+        );
+
+        $wp_customize->add_control('growtype_search_show_results_in_modal',
+            array (
+                'label' => esc_html__('Results in Modal'),
+                'type' => 'checkbox',
+                'description' => __('Show search results in modal window.', 'growtype-search'),
+                'section' => 'growtype_search',
+            )
+        );
+
+        /**
          * Ajax search
          */
         $wp_customize->add_setting('growtype_search_ajax_disabled',
@@ -217,7 +236,7 @@ class Growtype_Search_Customizer
             array (
                 'label' => esc_html__('Ajax Disabled'),
                 'type' => 'checkbox',
-                'description' => __('Enable/disable ajax search.', 'growtype-search'),
+                'description' => __('Disable ajax search.', 'growtype-search'),
                 'section' => 'growtype_search',
             )
         );

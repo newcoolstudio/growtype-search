@@ -4,25 +4,39 @@ function ajax() {
     Object.entries(window.growtypeSearch).map(function (element) {
         let searchId = element[0];
         let searchForm = $('#' + searchId + ' .growtype-search-form');
+        let searchOnLoad = element[1]['static']['search_on_load'] === 'true' ? true : false;
 
         let is_clicked = true;
         searchForm.find('.btn-growtype-search-submit').on('click', function (event) {
-            event.preventDefault();
-            if (is_clicked == true) {
-                is_clicked = false;
-                setTimeout(function () {
-                    is_clicked = true;
-                }, 2500);
+            let ajaxEnabled = $(this).closest('.growtype-search-wrapper[data-ajax="true"]');
+            ajaxEnabled = ajaxEnabled && ajaxEnabled.length > 0;
 
-                if (element[1]['static']['search_on_empty'] === 'true') {
-                    searchOnEmptyInput = true;
+            let searchOnEmpty = element[1]['static']['search_on_empty'] === 'true' ? true : false;
+            let searchInput = searchForm.find('.growtype-search-input');
+
+            if (!searchOnEmpty && searchInput.val().length === 0) {
+                event.preventDefault();
+                searchInput.addClass('is-error');
+            }
+
+            if (ajaxEnabled) {
+                event.preventDefault();
+                if (is_clicked == true) {
+                    is_clicked = false;
+                    setTimeout(function () {
+                        is_clicked = true;
+                    }, 2500);
+
+                    if (searchOnEmpty) {
+                        searchOnEmptyInput = true;
+                    }
+
+                    ajax_search(searchForm, element[1]);
                 }
-
-                ajax_search(searchForm, element[1]);
             }
         });
 
-        if (element[1]['static']['search_on_load'] === 'true') {
+        if (searchOnLoad) {
             searchOnEmptyInput = true;
             ajax_search(searchForm, element[1]);
         }

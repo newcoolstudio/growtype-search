@@ -1,12 +1,12 @@
-<div id="<?php echo $parent_id ?>" class="growtype-search-wrapper growtype-search-<?php echo $search_type ?>">
+<div id="<?php echo $parent_id ?>" data-ajax="<?php echo !get_theme_mod('growtype_search_ajax_disabled', false) ? 'true' : 'false' ?>" class="growtype-search-wrapper growtype-search-<?php echo $search_type ?>">
     <div class="growtype-search-inner">
         <?php if (!empty(get_theme_mod('growtype_search_intro_text'))) { ?>
             <p class="e-title-intro"><?php echo get_theme_mod('growtype_search_intro_text') ?></p>
         <?php } ?>
 
         <form class="growtype-search-form" role="search" method="get" action="<?php echo growtype_search_permalink() ?>">
-            <input type="text" value="" name="s" class="growtype-search-input" placeholder="<?php echo $search_input_placeholder ?>"/>
-            <button class="btn-growtype-search-submit" type="submit" value="Search">
+            <input type="text" value="<?php echo isset($_GET['s']) && !empty($_GET['s']) ? $_GET['s'] : '' ?>" name="s" class="growtype-search-input" placeholder="<?php echo $search_input_placeholder ?>"/>
+            <button class="btn btn-primary btn-growtype-search-submit" type="submit" value="Search">
                 <span class="search-icon"><svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" width="64px" height="64px">
     <path d="M 31 11 C 19.973 11 11 19.973 11 31 C 11 42.027 19.973 51 31 51 C 34.974166 51 38.672385 49.821569 41.789062 47.814453 L 54.726562 60.751953 C 56.390563 62.415953 59.088953 62.415953 60.751953 60.751953 C 62.415953 59.087953 62.415953 56.390563 60.751953 54.726562 L 47.814453 41.789062 C 49.821569 38.672385 51 34.974166 51 31 C 51 19.973 42.027 11 31 11 z M 31 19 C 37.616 19 43 24.384 43 31 C 43 37.616 37.616 43 31 43 C 24.384 43 19 37.616 19 31 C 19 24.384 24.384 19 31 19 z"/>
 </svg>
