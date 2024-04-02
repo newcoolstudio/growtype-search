@@ -112,7 +112,6 @@ class Growtype_Search_Admin
          */
 
         wp_enqueue_script($this->growtype_search, plugin_dir_url(__FILE__) . 'js/growtype-search-admin.js', array ('jquery'), $this->version, false);
-
     }
 
     /**

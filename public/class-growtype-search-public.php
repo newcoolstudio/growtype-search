@@ -53,7 +53,12 @@ class Growtype_Search_Public
     public function __construct($growtype_search, $version)
     {
         $this->growtype_search = $growtype_search;
-        $this->version = $version;
+
+        if (defined('GROWTYPE_SEARCH_VERSION')) {
+            $this->version = GROWTYPE_SEARCH_VERSION;
+        } else {
+            $this->version = '1.0.0';
+        }
 
         add_action('wp_footer', array ($this, 'add_scripts_to_footer'));
     }
@@ -65,7 +70,7 @@ class Growtype_Search_Public
     {
         ?>
         <script type="text/javascript">
-            window.growtypeSearch = {};
+            window.growtype_search = {};
         </script>
         <?php
     }
@@ -75,8 +80,7 @@ class Growtype_Search_Public
      *
      * @since    1.0.0
      */
-    public
-    function enqueue_styles()
+    public function enqueue_styles()
     {
         wp_enqueue_style($this->growtype_search, GROWTYPE_SEARCH_URL_PUBLIC . 'styles/growtype-search.css', array (), $this->version, 'all');
     }

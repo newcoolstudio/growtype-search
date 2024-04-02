@@ -5,11 +5,7 @@ add_action('wp_ajax_' . Growtype_Search_Public::GROWTYPE_SEARCH_AJAX_ACTION, 'gr
 
 function growtype_search_ajax_callback()
 {
-    if (!wp_verify_nonce($_REQUEST['nonce'], 'ajax-nonce')) {
-        die (__('Something went wrong', 'growtype-search'));
-    }
-
-    $search = isset($_REQUEST['search']) ? $_REQUEST['search'] : '';
+    $search = isset($_REQUEST['search']['s']) ? $_REQUEST['search']['s'] : '';
     $settings_static = isset($_REQUEST['settings_static']) ? $_REQUEST['settings_static'] : [];
     $lang = isset($_REQUEST['lang']) ? $_REQUEST['lang'] : (class_exists('QTX_Translator') ? qtranxf_getLanguage() : 'en');
 
@@ -26,19 +22,20 @@ function growtype_search_ajax_callback()
         'post_type' => $included_post_types,
         'post_status' => 'publish',
         'posts_per_page' => -1,
-        's' => $search,
+        's' => $search
     );
 
+    $args = apply_filters('growtype_search_ajax_args', $args, $_REQUEST);
+
     $search_results = new WP_Query($args);
+
+    $search_results = apply_filters('growtype_search_ajax_results', $search_results, $args, $_REQUEST);
 
     ob_start();
 
     if ($search_results->have_posts()) {
         while ($search_results->have_posts()) : $search_results->the_post();
-            $post_id = get_the_ID();
             $post = get_post();
-            $featured_image = wp_get_attachment_image_src(get_post_thumbnail_id($post_id), 'medium');
-            $featured_image = ($featured_image) ? $featured_image[0] : '';
 
             $result = growtype_search_include_view('search.ajax.result', [
                 'post' => $post

@@ -3,14 +3,32 @@
   background: white;
   margin-top: 10px;
   border-radius: 5px;
-  overflow: scroll;
-  max-height: 90vh;
-  display: flex;
-  flex-wrap: wrap;
+  padding-top: 30px;
   @include bp-phone-xl() {
     padding: 10px;
     margin-top: 15px;
     max-height: 82vh;
+    padding-top: 20px;
+  }
+
+  .btn-close {
+    padding: 0;
+    margin-left: auto;
+    position: absolute;
+    right: 10px;
+    top: 12px;
+
+    &:hover {
+      background: none !important;
+    }
+  }
+
+  .growtype-search-results-inner {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: scroll;
+    max-height: 40vh;
+    color: black;
   }
 
   .growtype-search-result {
@@ -46,7 +64,7 @@
       margin-right: 15px;
       width: 100%;
       max-width: 80px;
-      max-height: 60px;
+      max-height: 75px;
 
       .img {
         width: 100%;
