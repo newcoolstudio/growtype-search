@@ -25,6 +25,8 @@ function growtype_search_ajax_callback()
         's' => $search
     );
 
+    error_log(sprintf('growtype_search_ajax_callback: %s', json_encode($args)));
+
     $args = apply_filters('growtype_search_ajax_args', $args, $_REQUEST);
 
     $search_results = new WP_Query($args);

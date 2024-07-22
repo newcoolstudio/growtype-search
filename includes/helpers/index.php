@@ -53,18 +53,23 @@ if (!function_exists('growtype_search_permalink')) {
 if (!function_exists('growtype_search_enabled')) {
     function growtype_search_enabled()
     {
-        $search_disabled = get_theme_mod('growtype_search_disabled');
-        $search_enabled_pages = get_theme_mod('growtype_search_enabled_pages');
+        $search_enabled = !get_theme_mod('growtype_search_disabled', false);
+        $search_enabled_pages = get_theme_mod('growtype_search_enabled_pages', []);
 
-        if (!$search_disabled && !empty($search_enabled_pages)) {
-            $search_enabled = false;
-
-            if (page_is_among_enabled_pages($search_enabled_pages)) {
-                $search_enabled = true;
+        if (!empty($search_enabled_pages) && is_array($search_enabled_pages) && isset($search_enabled_pages[0]) && $search_enabled_pages[0] !== 'all') {
+            foreach ($search_enabled_pages as $page) {
+                $page_id = !empty((int)$page) ? (int)$page : '';
+                if (empty($page_id)) {
+                    if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], $page) === false) {
+                        $search_enabled = false;
+                    }
+                } elseif (!is_page($page_id)) {
+                    $search_enabled = false;
+                }
             }
         }
 
-        return $search_enabled;
+        return apply_filters('growtype_search_enabled', $search_enabled);
     }
 }
 
@@ -174,9 +179,29 @@ if (!function_exists('growtype_search_result_content')) {
             $post_content = $post->post_excerpt;
         }
 
+        $post_content = growtype_search_format_results_content($post_content);
+
         ?>
         <div class="title"><?php echo $post_title ?></div>
         <div class="content"><?php echo growtype_search_get_limited_content($post_content) ?></div>
         <?php
     }
+}
+
+function growtype_search_format_results_content($content, $max_length = 120)
+{
+    if (strlen($content) > $max_length) {
+        return substr($content, 0, $max_length) . '...';
+    }
+
+    return $content;
+}
+
+function growtype_search_form_is_fixed($args = [])
+{
+    if (isset($args['search_type']) && $args['search_type'] === 'fixed') {
+        return true;
+    }
+
+    return get_theme_mod('growtype_search_type') === 'fixed';
 }

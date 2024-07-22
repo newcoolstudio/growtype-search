@@ -1,6 +1,6 @@
 <div id="<?php echo $parent_id ?>"
      data-ajax="<?php echo !get_theme_mod('growtype_search_ajax_disabled', false) ? 'true' : 'false' ?>"
-     class="growtype-search-wrapper growtype-search-<?php echo $search_type ?>"
+     class="<?php echo $parent_class ?>"
 >
     <div class="growtype-search-inner">
         <?php if (!empty(get_theme_mod('growtype_search_intro_text'))) { ?>
@@ -8,7 +8,7 @@
         <?php } ?>
 
         <form class="growtype-search-form" role="search" method="get" action="<?php echo growtype_search_permalink() ?>">
-            <?php echo do_action('growtype_search_form_after_open')?>
+            <?php echo do_action('growtype_search_form_after_open') ?>
             <input type="text" value="<?php echo isset($_GET['s']) && !empty($_GET['s']) ? $_GET['s'] : '' ?>" name="s" class="growtype-search-input growtype-search-value" placeholder="<?php echo $search_input_placeholder ?>"/>
             <?php echo growtype_search_include_view('search.form.actions.btn-search') ?>
         </form>
@@ -21,9 +21,11 @@
             </div>
         <?php } ?>
 
-        <div class="growtype-search-results" style="display: none;">
-            <button class="btn-close"></button>
-            <div class="growtype-search-results-inner"></div>
+        <div class="growtype-search-results-wrapper">
+            <div class="growtype-search-results" style="display: none;">
+                <button class="btn-close"></button>
+                <div class="growtype-search-results-inner"></div>
+            </div>
         </div>
 
         <?php echo growtype_search_include_view('search.form.actions.show-more-results') ?>

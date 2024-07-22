@@ -10,13 +10,14 @@ class Growtype_Search_Customizer
      */
     public function __construct()
     {
-        $this->customizer_available_pages = $this->get_available_pages();
+        $this->customizer_available_pages = ['all' => 'All'] + $this->get_available_pages();
+
         $this->block_attributes = json_decode(file_get_contents(GROWTYPE_SEARCH_PATH . 'src/block.json'), true)["attributes"] ?? [];
 
         add_action('customize_register', array ($this, 'customizer_init'));
 
         add_action('after_setup_theme', function () {
-            $this->customizer_available_post_types = $this->get_available_post_types();
+            $this->customizer_available_post_types = ['any' => 'Any'] + $this->get_available_post_types();
         });
     }
 
@@ -129,9 +130,9 @@ class Growtype_Search_Customizer
 
         $wp_customize->add_control('growtype_search_disabled',
             array (
-                'label' => __('Disable search', 'growtype-search'),
+                'label' => __('Initially hide search', 'growtype-search'),
                 'type' => 'checkbox',
-                'description' => __('Enable/disable search.', 'growtype-search'),
+                'description' => __('Hide/show search initially.', 'growtype-search'),
                 'section' => 'growtype_search',
             )
         );
@@ -175,7 +176,7 @@ class Growtype_Search_Customizer
                     'description' => esc_html__('In which post types search should be conducted.', 'growtype'),
                     'section' => 'growtype_search',
                     'type' => 'select',
-                    'choices' => array_merge(['any' => 'Any'], $this->customizer_available_post_types)
+                    'choices' => $this->customizer_available_post_types
                 )
             )
         );
@@ -190,15 +191,16 @@ class Growtype_Search_Customizer
             )
         );
 
+
         $wp_customize->add_control(
             new Growtype_Search_Multiple_Select(
                 $wp_customize, 'growtype_search_enabled_pages',
                 array (
-                    'label' => __('Pages', 'growtype-search'),
+                    'label' => __('Search Enabled Pages', 'growtype-search'),
                     'description' => __('In which pages search available.', 'growtype-search'),
                     'section' => 'growtype_search',
                     'type' => 'select',
-                    'choices' => array_merge(['all' => 'All'], $this->customizer_available_pages)
+                    'choices' => $this->customizer_available_pages
                 )
             )
         );

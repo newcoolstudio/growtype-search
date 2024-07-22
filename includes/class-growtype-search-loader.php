@@ -167,5 +167,11 @@ class Growtype_Search_Loader
          */
         require_once GROWTYPE_SEARCH_PATH . 'includes/methods/blocks/class-growtype-search-block.php';
         $this->loader = new Growtype_Search_Block();
+
+        /**
+         * Render
+         */
+        require_once GROWTYPE_SEARCH_PATH . 'includes/methods/render/class-growtype-search-render.php';
+        $this->loader = new Growtype_Search_Render();
     }
 }

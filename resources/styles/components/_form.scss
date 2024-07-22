@@ -1,6 +1,20 @@
 .growtype-search-wrapper {
   position: relative;
 
+  &.is-hidden-initially {
+    display: none;
+  }
+
+  &.is-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 101;
+    background: white;
+    display: none;
+  }
+
   .growtype-search-form {
     position: relative;
   }
@@ -93,4 +107,10 @@
   border: 1px solid black;
   border-radius: 10px;
   color: black;
+}
+
+.admin-bar {
+  .growtype-search-wrapper.is-fixed {
+    top: 32px;
+  }
 }

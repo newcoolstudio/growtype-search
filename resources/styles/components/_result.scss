@@ -1,9 +1,21 @@
+.growtype-search-results-wrapper {
+  position: relative;
+  width: 100%;
+}
+
 .growtype-search-results {
   padding: 20px;
   background: white;
   margin-top: 10px;
   border-radius: 5px;
   padding-top: 30px;
+  position: absolute;
+  border: 1px solid rgb(0 0 0 / 10%);
+  z-index: 11;
+  width: 100%;
+  left: 0px;
+  right: 0px;
+  top: 0px;
   @include bp-phone-xl() {
     padding: 10px;
     margin-top: 15px;
@@ -64,6 +76,7 @@
       margin-right: 15px;
       width: 100%;
       max-width: 80px;
+      min-width: 80px;
       max-height: 75px;
 
       .img {

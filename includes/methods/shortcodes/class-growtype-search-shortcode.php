@@ -7,8 +7,6 @@ class Growtype_Search_Shortcode
 {
     public function __construct()
     {
-        $this->search_type = !empty(get_theme_mod('growtype_search_type')) ? get_theme_mod('growtype_search_type') : 'inline';
-
         if (!is_admin() && !wp_is_json_request()) {
             add_shortcode('growtype_search_btn', array ($this, 'growtype_search_btn_shortcode'));
 
@@ -20,7 +18,7 @@ class Growtype_Search_Shortcode
 
     function growtype_search_add_body_content()
     {
-        if ($this->search_type === 'fixed') {
+        if (growtype_search_form_is_fixed()) {
             echo do_shortcode('[growtype_search_form]');
         }
     }
@@ -30,12 +28,8 @@ class Growtype_Search_Shortcode
      */
     function growtype_search_form_shortcode($atts)
     {
-        if (get_theme_mod('growtype_search_disabled')) {
-            return '';
-        }
-
         $params = array (
-            'search_type' => isset($atts['search_type']) && !empty($atts['search_type']) ? $atts['search_type'] : $this->search_type,
+            'search_type' => isset($atts['search_type']) && !empty($atts['search_type']) ? $atts['search_type'] : get_theme_mod('growtype_search_type', 'inline'),
             'parent_id' => isset($atts['parent_id']) && !empty($atts['parent_id']) ? $atts['parent_id'] : md5(uniqid(rand(), true)),
             'search_input_placeholder' => isset($atts['search_input_placeholder']) && !empty($atts['search_input_placeholder']) ? $atts['search_input_placeholder'] : __('Search...', 'growtype-search'),
             'search_on_load' => isset($atts['search_on_load']) && !empty($atts['search_on_load']) ? $atts['search_on_load'] : 'false',
@@ -43,10 +37,34 @@ class Growtype_Search_Shortcode
             'visible_results_amount' => isset($atts['visible_results_amount']) && !empty($atts['visible_results_amount']) ? $atts['visible_results_amount'] : '',
             'search_on_empty' => isset($atts['search_on_empty']) && !empty($atts['search_on_empty']) ? $atts['search_on_empty'] : 'false',
             'post_types_included' => isset($atts['post_types_included']) && !empty($atts['post_types_included']) ? $atts['post_types_included'] : '',
+            'parent_class' => isset($atts['parent_class']) && !empty($atts['parent_class']) ? $atts['parent_class'] : '',
+            'is_hidden_initially' => isset($atts['is_hidden_initially']) ? filter_var($atts['is_hidden_initially'], FILTER_VALIDATE_BOOLEAN) : !growtype_search_enabled(),
         );
 
+        /**
+         * Set parent class
+         */
+        $parent_class = explode(' ', $params['parent_class']);
+
+        $parent_class = array_merge($parent_class, [
+            'growtype-search-wrapper',
+            'growtype-search-form-' . $params['parent_id'],
+            $params['is_hidden_initially'] ? 'is-hidden-initially' : '',
+            growtype_search_form_is_fixed($atts) ? 'is-fixed' : '',
+        ]);
+
+        $parent_class = array_filter($parent_class);
+
+        $params['parent_class'] = implode(' ', $parent_class);
+
+        /**
+         * Filter search params
+         */
         $params = apply_filters('growtype_search_params', $params);
 
+        /**
+         * Output search form
+         */
         ob_start();
 
         echo growtype_search_include_view('search.form.index', $params);
@@ -63,6 +81,8 @@ class Growtype_Search_Shortcode
                 'post_types_included' => $params['post_types_included'],
             ]
         ];
+
+//        d($params);
 
         /**
          * Pass values to frontend

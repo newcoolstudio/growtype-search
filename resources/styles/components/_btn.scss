@@ -61,9 +61,20 @@
     color: white;
     border: 1px solid black;
 
-    &:hover {
+    &:hover, &:active, &:focus {
       opacity: 1;
       transition: all 0.5s;
+      border-color: black;
+
+      .e-label {
+        color: black;
+      }
+
+      svg {
+        path {
+          fill: black;
+        }
+      }
     }
 
     .e-label {

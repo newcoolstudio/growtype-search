@@ -2,58 +2,79 @@ function ajax() {
     let searchOnEmptyInput = false;
 
     Object.entries(window.growtype_search).map(function (element) {
-        let searchId = element[0];
-        let searchForm = jQuery('#' + searchId + ' .growtype-search-form');
-        let searchOnLoad = element[1]['static']['search_on_load'] === 'true' ? true : false;
-        let searchOnType = element[1]['static']['search_on_type'] === 'true' ? true : false;
+        let searchFormParams = element[1]['static'];
+        searchFormParams['id'] = element[0];
 
-        let is_clicked = true;
-        searchForm.find('.btn-growtype-search-submit').on('click', function (event) {
-            let ajaxEnabled = jQuery(this).closest('.growtype-search-wrapper[data-ajax="true"]');
-            ajaxEnabled = ajaxEnabled && ajaxEnabled.length > 0;
+        let searchForm = jQuery('#' + element[0] + ' .growtype-search-form');
 
-            let searchOnEmpty = element[1]['static']['search_on_empty'] === 'true' ? true : false;
-            let searchInput = searchForm.find('.growtype-search-input');
+        initSearchForm(searchForm, searchFormParams);
+    });
 
-            if (!searchOnEmpty && searchInput.val().length === 0) {
-                event.preventDefault();
-                searchInput.addClass('is-error');
-            }
+    document.addEventListener('growtypeHeaderFixedLoaded', function (params) {
+        Object.entries(params.detail.clonedScrollableElements).map(function (element) {
+            let searchFormId = $(element[1]).find('.growtype-search-wrapper').attr('id');
+            let searchFormParams = window.growtype_search[searchFormId]['static'];
+            searchFormParams['id'] = searchFormId;
 
-            if (ajaxEnabled) {
-                event.preventDefault();
-                if (is_clicked == true) {
-                    is_clicked = false;
-                    setTimeout(function () {
-                        is_clicked = true;
-                    }, 2500);
+            initSearchForm($(element[1]).find('.growtype-search-form'), searchFormParams);
+        })
+    })
 
-                    if (searchOnEmpty) {
-                        searchOnEmptyInput = true;
-                    }
+    function initSearchForm(searchForm, params) {
+        let searchOnLoad = params['search_on_load'] === 'true' ? true : false;
+        let searchOnType = params['search_on_type'] === 'true' ? true : false;
+        let searchOnEmpty = params['search_on_empty'] === 'true' ? true : false;
 
-                    ajax_search(searchForm, element[1]);
+        searchForm.map(function (index, element) {
+
+            let is_clicked = true;
+            $(element).find('.btn-growtype-search-submit').on('click', function (event) {
+                let ajaxEnabled = jQuery(this).closest('.growtype-search-wrapper[data-ajax="true"]');
+                ajaxEnabled = ajaxEnabled && ajaxEnabled.length > 0;
+
+                let searchInput = searchForm.find('.growtype-search-input');
+
+                if (!searchOnEmpty && searchInput.val().length === 0) {
+                    event.preventDefault();
+                    searchInput.addClass('is-error');
+                    return;
                 }
-            }
+
+                if (ajaxEnabled) {
+                    event.preventDefault();
+                    if (is_clicked == true) {
+                        is_clicked = false;
+                        setTimeout(function () {
+                            is_clicked = true;
+                        }, 1500);
+
+                        if (searchOnEmpty) {
+                            searchOnEmptyInput = true;
+                        }
+
+                        ajax_search(searchForm, params);
+                    }
+                }
+            });
         });
 
         if (searchOnLoad) {
             searchOnEmptyInput = true;
-            ajax_search(searchForm, element[1]);
+            ajax_search(searchForm, params);
         }
 
         if (searchOnType) {
             let inputDelayTimer;
-            $('.growtype-search-form .growtype-search-input').on('input', function () {
+            searchForm.on('input', function () {
                 clearTimeout(inputDelayTimer);
                 inputDelayTimer = setTimeout(function () {
-                    ajax_search(searchForm, element[1]);
+                    ajax_search(searchForm, formDetails);
                 }, 500); // Set the delay time in milliseconds (e.g., 500ms)
             });
         }
 
         showMoreResults(searchForm);
-    });
+    }
 
     function ajax_search(form, settings = null) {
         let searchInput = form.find('.growtype-search-value');
@@ -66,7 +87,7 @@ function ajax() {
             let hasError = false;
             if (searchOnEmptyInput) {
                 hasError = false;
-            } else if (searchInputVal.length === 0) {
+            } else if (searchInputVal.length < 3) {
                 hasError = true;
             }
 
@@ -101,9 +122,9 @@ function ajax() {
                 action: growtype_search_ajax.action,
                 nonce: growtype_search_ajax.nonce,
                 search: searchValues,
-                settings_static: settings !== null ? settings['static'] : null,
+                settings_static: settings !== null ? settings : null,
             }, beforeSend() {
-                jQuery('.growtype-search-wrapper').addClass('is-loading');
+                form.closest('.growtype-search-wrapper').addClass('is-loading');
             }, success: function (response) {
                 searchOnEmptyInput = false;
 
@@ -114,11 +135,11 @@ function ajax() {
                 let html = jQuery(response['html'])
 
                 let showActions = false;
-                if (settings['static']['visible_results_amount']) {
+                if (settings['visible_results_amount']) {
                     let counter = 0;
                     html.map(function (index, element) {
                         if (element.innerHTML !== undefined) {
-                            if (counter >= settings['static']['visible_results_amount']) {
+                            if (counter >= settings['visible_results_amount']) {
                                 jQuery(element).addClass('initialy-is-hidden').hide();
                                 showActions = true;
                             }
