@@ -50,6 +50,8 @@ class Growtype_Search_Loader
      *
      * @since    1.0.0
      */
+    private $loader;
+
     public function __construct()
     {
         $this->actions = array ();

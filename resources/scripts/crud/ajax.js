@@ -12,11 +12,16 @@ function ajax() {
 
     document.addEventListener('growtypeHeaderFixedLoaded', function (params) {
         Object.entries(params.detail.clonedScrollableElements).map(function (element) {
-            let searchFormId = $(element[1]).find('.growtype-search-wrapper').attr('id');
-            let searchFormParams = window.growtype_search[searchFormId]['static'];
-            searchFormParams['id'] = searchFormId;
+            if ($(element[1]).find('.growtype-search-wrapper').length > 0) {
+                let searchFormId = $(element[1]).find('.growtype-search-wrapper').attr('id');
 
-            initSearchForm($(element[1]).find('.growtype-search-form'), searchFormParams);
+                if (searchFormId) {
+                    let searchFormParams = window.growtype_search[searchFormId]['static'];
+                    searchFormParams['id'] = searchFormId;
+
+                    initSearchForm($(element[1]).find('.growtype-search-form'), searchFormParams);
+                }
+            }
         })
     })
 

@@ -105,13 +105,13 @@ if (!function_exists('growtype_search_render_svg')) {
 if (!function_exists('growtype_search_get_post_types')) {
     function growtype_search_get_post_types()
     {
-        $posts = get_theme_mod('growtype_search_post_types_included');
+        $post_types = get_theme_mod('growtype_search_post_types_included');
 
-        if (empty($posts) || (is_array($posts) && in_array('all', $posts))) {
-            $posts = Growtype_Search_Customizer::get_available_post_types();
+        if (empty($post_types) || (is_array($post_types) && in_array('all', $post_types))) {
+            $post_types = Growtype_Search_Customizer::get_available_post_types();
         }
 
-        return $posts;
+        return apply_filters('growtype_search_post_types', $post_types);
     }
 }
 
@@ -199,9 +199,18 @@ function growtype_search_format_results_content($content, $max_length = 120)
 
 function growtype_search_form_is_fixed($args = [])
 {
-    if (isset($args['search_type']) && $args['search_type'] === 'fixed') {
-        return true;
+    if (isset($args['search_type'])) {
+        if ($args['search_type'] === 'fixed') {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     return get_theme_mod('growtype_search_type') === 'fixed';
+}
+
+function growtype_search_id()
+{
+    return 'gs-' . md5(uniqid(rand(), true));
 }

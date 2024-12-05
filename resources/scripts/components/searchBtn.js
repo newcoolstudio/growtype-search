@@ -11,13 +11,20 @@ function searchBtn() {
     });
 
     function openSearch(element) {
-        if (element.parent().find('.growtype-search-wrapper').is(':visible')) {
+        let id = element.attr('data-search-id');
+        let wrapper = $('#' + id);
+
+        if (!wrapper.length) {
+            wrapper = element.parent().find('.growtype-search-wrapper');
+        }
+
+        if (wrapper.is(':visible')) {
             element.addClass('is-active');
-            element.parent().find('.growtype-search-wrapper').fadeOut();
+            wrapper.fadeOut();
         } else {
             element.removeClass('is-active');
-            element.parent().find('.growtype-search-wrapper').fadeIn();
-            element.parent().find('.growtype-search-input').focus();
+            wrapper.fadeIn();
+            wrapper.find('.growtype-search-input').focus();
         }
     }
 

@@ -5,6 +5,10 @@
  */
 class Growtype_Search_Customizer
 {
+    private $customizer_available_pages;
+    private $block_attributes;
+    private $customizer_available_post_types;
+
     /**
      * Constructor.
      */
@@ -103,7 +107,7 @@ class Growtype_Search_Customizer
             $post_types['product'] = 'product';
         }
 
-        return $post_types;
+        return apply_filters('growtype_search_available_post_types', $post_types);
     }
 
     function customizer_init($wp_customize)

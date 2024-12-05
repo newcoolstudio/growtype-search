@@ -13,6 +13,10 @@
     z-index: 101;
     background: white;
     display: none;
+
+    .growtype-search-inner {
+      padding: 40px 15px 20px;
+    }
   }
 
   .growtype-search-form {
@@ -26,7 +30,7 @@
     margin: auto;
     padding-left: 15px;
     padding-right: 15px;
-    padding-top: 40px;
+    padding-top: 20px;
   }
 
   .e-title-intro {

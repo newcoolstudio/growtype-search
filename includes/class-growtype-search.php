@@ -73,6 +73,8 @@ class Growtype_Search
      *
      * @since    1.0.0
      */
+    private $growtype_search;
+
     public function __construct()
     {
         if (defined('GROWTYPE_SEARCH_VERSION')) {
