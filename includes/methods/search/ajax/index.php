@@ -6,6 +6,8 @@ add_action('wp_ajax_' . Growtype_Search_Public::GROWTYPE_SEARCH_AJAX_ACTION, 'gr
 function growtype_search_ajax_callback()
 {
     $search = isset($_REQUEST['search']['s']) ? $_REQUEST['search']['s'] : '';
+    $search = sanitize_text_field($search);
+
     $settings_static = isset($_REQUEST['settings_static']) ? $_REQUEST['settings_static'] : [];
     $lang = isset($_REQUEST['lang']) ? $_REQUEST['lang'] : (class_exists('QTX_Translator') ? qtranxf_getLanguage() : 'en');
 
@@ -36,15 +38,21 @@ function growtype_search_ajax_callback()
     ob_start();
 
     if ($search_results->have_posts()) {
-        while ($search_results->have_posts()) : $search_results->the_post();
-            $post = get_post();
+        ?>
+        <div class="growtype-search-results-inner-content">
+            <?php
+            while ($search_results->have_posts()) : $search_results->the_post();
+                $post = get_post();
 
-            $result = growtype_search_include_view('search.ajax.result', [
-                'post' => $post
-            ]);
+                $result = growtype_search_include_view('search.ajax.result', [
+                    'post' => $post
+                ]);
 
-            echo apply_filters('growtype_search_result_render', $result, $post);
-        endwhile;
+                echo apply_filters('growtype_search_result_render', $result, $post);
+            endwhile;
+            ?>
+        </div>
+        <?php
 
         wp_reset_postdata();
     } else {

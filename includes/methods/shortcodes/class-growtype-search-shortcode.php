@@ -29,7 +29,7 @@ class Growtype_Search_Shortcode
     function growtype_search_form_shortcode($atts)
     {
         $params = array (
-            'search_type' => isset($atts['search_type']) && !empty($atts['search_type']) ? $atts['search_type'] : get_theme_mod('growtype_search_type', 'inline'),
+            'search_type' => isset($atts['search_type']) && !empty($atts['search_type']) ? $atts['search_type'] : growtype_search_default_search_type(),
             'search_cat' => isset($atts['search_cat']) && !empty($atts['search_cat']) ? $atts['search_cat'] : null,
             'parent_id' => isset($atts['parent_id']) && !empty($atts['parent_id']) ? $atts['parent_id'] : growtype_search_id(),
             'search_input_placeholder' => isset($atts['search_input_placeholder']) && !empty($atts['search_input_placeholder']) ? $atts['search_input_placeholder'] : __('Search...', 'growtype-search'),

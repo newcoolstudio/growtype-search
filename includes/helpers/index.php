@@ -207,7 +207,12 @@ function growtype_search_form_is_fixed($args = [])
         }
     }
 
-    return get_theme_mod('growtype_search_type') === 'fixed';
+    return growtype_search_default_search_type() === 'fixed';
+}
+
+function growtype_search_default_search_type()
+{
+    return get_theme_mod('growtype_search_type', 'fixed');
 }
 
 function growtype_search_id()

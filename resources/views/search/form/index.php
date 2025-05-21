@@ -23,8 +23,10 @@
 
         <div class="growtype-search-results-wrapper">
             <div class="growtype-search-results" style="display: none;">
+                <?php do_action('growtype_search_results_after_open') ?>
                 <button class="btn-close"></button>
                 <div class="growtype-search-results-inner"></div>
+                <?php do_action('growtype_search_results_before_close') ?>
             </div>
         </div>
 
