@@ -162,18 +162,18 @@ class Growtype_Search_Loader
          * Shortcode
          */
         require_once GROWTYPE_SEARCH_PATH . 'includes/methods/shortcodes/class-growtype-search-shortcode.php';
-        $this->loader = new Growtype_Search_Shortcode();
+        new Growtype_Search_Shortcode();
 
         /**
          * Block
          */
         require_once GROWTYPE_SEARCH_PATH . 'includes/methods/blocks/class-growtype-search-block.php';
-        $this->loader = new Growtype_Search_Block();
+        new Growtype_Search_Block();
 
         /**
          * Render
          */
         require_once GROWTYPE_SEARCH_PATH . 'includes/methods/render/class-growtype-search-render.php';
-        $this->loader = new Growtype_Search_Render();
+        new Growtype_Search_Render();
     }
 }

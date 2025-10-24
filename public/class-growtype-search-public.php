@@ -92,7 +92,9 @@ class Growtype_Search_Public
      */
     public function enqueue_scripts()
     {
-        wp_enqueue_script($this->growtype_search, GROWTYPE_SEARCH_URL_PUBLIC . 'scripts/growtype-search.js', array ('jquery'), $this->version, true);
+        if (!is_admin()) {
+            wp_enqueue_script($this->growtype_search, GROWTYPE_SEARCH_URL_PUBLIC . 'scripts/growtype-search.js', array ('jquery'), $this->version, true);
+        }
 
         $ajax_url = admin_url('admin-ajax.php');
 
@@ -106,5 +108,4 @@ class Growtype_Search_Public
             'action' => self::GROWTYPE_SEARCH_AJAX_ACTION
         ));
     }
-
 }

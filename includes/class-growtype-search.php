@@ -240,7 +240,7 @@ class Growtype_Search
      */
     private function define_public_hooks()
     {
-        $plugin_public = new Growtype_Search_Public($this->get_Growtype_Search(), $this->get_version());
+        $plugin_public = new Growtype_Search_Public($this->get_growtype_search(), $this->get_version());
 
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_styles');
         $this->loader->add_action('wp_enqueue_scripts', $plugin_public, 'enqueue_scripts');
