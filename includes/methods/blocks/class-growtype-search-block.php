@@ -24,7 +24,10 @@ class Growtype_Search_Block
                     'available_post_types' => $this->get_available_post_types(),
                 ];
             },
-            'permission_callback' => '__return_true'
+            // SECURITY: Require editor capabilities instead of public access
+            'permission_callback' => function() {
+                return current_user_can('edit_posts');
+            }
         ));
     }
 
