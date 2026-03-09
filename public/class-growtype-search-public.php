@@ -104,7 +104,7 @@ class Growtype_Search_Public
 
         wp_localize_script($this->growtype_search, 'growtype_search_ajax', array (
             'url' => $ajax_url,
-            'nonce' => wp_create_nonce('growtype_search_ajax_nonce'), // SECURITY: Updated nonce name to match AJAX handler
+            'nonce' => wp_create_nonce(self::GROWTYPE_SEARCH_AJAX_ACTION), // SECURITY: Updated nonce name to match AJAX handler
             'action' => self::GROWTYPE_SEARCH_AJAX_ACTION
         ));
     }

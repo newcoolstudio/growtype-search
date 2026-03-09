@@ -119,7 +119,7 @@ function ajax() {
          * Ga send search value
          */
         if (typeof gtag !== 'undefined') {
-            gtag('event', 'search', {'event_category': 'search', 'event_label': searchValues});
+            gtag('event', 'search', { 'event_category': 'search', 'event_label': searchValues });
         }
 
         $.ajax({
@@ -134,8 +134,12 @@ function ajax() {
                 searchOnEmptyInput = false;
 
                 form.closest('.growtype-search-wrapper').removeClass('is-loading');
-                form.closest('.growtype-search-wrapper').removeClass('is-loading');
                 form.closest('.growtype-search-wrapper').find('.growtype-search-results').fadeIn();
+
+                if (response.success === false) {
+                    alert(response.data.message);
+                    return;
+                }
 
                 let html = jQuery(response['html'])
 
@@ -161,6 +165,13 @@ function ajax() {
                 form.closest('.growtype-search-wrapper').find('.growtype-search-results .growtype-search-results-inner').html(html);
 
                 closeSearchResults();
+            }, error: function (response) {
+                form.closest('.growtype-search-wrapper').removeClass('is-loading');
+                if (response.responseJSON && response.responseJSON.data && response.responseJSON.data.message) {
+                    alert(response.responseJSON.data.message);
+                } else {
+                    alert('An error occurred. Please try again.');
+                }
             }
         });
     }
@@ -189,4 +200,4 @@ function ajax() {
     }
 }
 
-export {ajax};
+export { ajax };

@@ -6,17 +6,17 @@ add_action('wp_ajax_' . Growtype_Search_Public::GROWTYPE_SEARCH_AJAX_ACTION, 'gr
 function growtype_search_ajax_callback()
 {
     // SECURITY: Verify nonce to prevent CSRF attacks
-    if (!isset($_REQUEST['nonce']) || !wp_verify_nonce($_REQUEST['nonce'], 'growtype_search_ajax_nonce')) {
+    if (!isset($_REQUEST['nonce']) || !wp_verify_nonce($_REQUEST['nonce'], Growtype_Search_Public::GROWTYPE_SEARCH_AJAX_ACTION)) {
         error_log('Growtype Search - Search nonce verification failed');
         wp_send_json_error([
             'message' => __('Security verification failed. Please refresh the page and try again.', 'growtype-search')
         ], 403);
     }
-    
+
     $search = isset($_REQUEST['search']['s']) ? sanitize_text_field($_REQUEST['search']['s']) : '';
 
-    $settings_static = isset($_REQUEST['settings_static']) && is_array($_REQUEST['settings_static']) 
-        ? array_map('sanitize_text_field', $_REQUEST['settings_static']) 
+    $settings_static = isset($_REQUEST['settings_static']) && is_array($_REQUEST['settings_static'])
+        ? array_map('sanitize_text_field', $_REQUEST['settings_static'])
         : [];
     $lang = isset($_REQUEST['lang']) ? sanitize_text_field($_REQUEST['lang']) : (class_exists('QTX_Translator') ? qtranxf_getLanguage() : 'en');
 
@@ -50,7 +50,8 @@ function growtype_search_ajax_callback()
         ?>
         <div class="growtype-search-results-inner-content">
             <?php
-            while ($search_results->have_posts()) : $search_results->the_post();
+            while ($search_results->have_posts()):
+                $search_results->the_post();
                 $post = get_post();
 
                 $result = growtype_search_include_view('search.ajax.result', [
