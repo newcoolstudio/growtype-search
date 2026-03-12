@@ -6,7 +6,7 @@
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @link       http://example.com
+ * @link       https://growtype.com
  * @since      1.0.0
  *
  * @package    Growtype_Form
@@ -22,7 +22,7 @@
  * @since      1.0.0
  * @package    Growtype_Search
  * @subpackage growtype_form/includes
- * @author     Your Name <email@example.com>
+ * @author     Growtype
  */
 class Growtype_Search_Session
 {

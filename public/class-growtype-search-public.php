@@ -3,7 +3,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       http://example.com
+ * @link       https://growtype.com
  * @since      1.0.0
  *
  * @package    Growtype_Search
@@ -18,7 +18,7 @@
  *
  * @package    Growtype_Search
  * @subpackage growtype_search/public
- * @author     Your Name <email@example.com>
+ * @author     Growtype
  */
 class Growtype_Search_Public
 {

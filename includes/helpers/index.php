@@ -80,22 +80,34 @@ if (!function_exists('growtype_search_enabled')) {
 if (!function_exists('growtype_search_render_svg')) {
     function growtype_search_render_svg($path)
     {
+        $transient_key = 'growtype_search_svg_' . md5($path);
+        $cached_svg = get_transient($transient_key);
+
+        if ($cached_svg !== false) {
+            return $cached_svg;
+        }
+
         $url = GROWTYPE_SEARCH_URL_PUBLIC . $path;
 
-        $arrContextOptions = [
-            "ssl" => array (
-                "verify_peer" => false,
-                "verify_peer_name" => false,
-            ),
-        ];
+        $response = wp_safe_remote_get($url, [
+            'timeout' => 5,
+            'redirection' => 5,
+            'httpversion' => '1.0',
+            'blocking'    => true,
+            'headers'     => [],
+            'cookies'     => [],
+        ]);
 
-        $response = file_get_contents(
-            $url,
-            false,
-            stream_context_create($arrContextOptions)
-        );
+        if (is_wp_error($response)) {
+            return '';
+        }
 
-        return $response;
+        $svg_content = wp_remote_retrieve_body($response);
+        
+        // Cache for 24 hours
+        set_transient($transient_key, $svg_content, DAY_IN_SECONDS);
+
+        return $svg_content;
     }
 }
 
@@ -218,4 +230,55 @@ function growtype_search_default_search_type()
 function growtype_search_id()
 {
     return 'gs-' . md5(uniqid(rand(), true));
+}
+
+/**
+ * Save searched value to WordPress option
+ *
+ * @param string $search
+ */
+if (!function_exists('growtype_search_save_searched_value')) {
+    function growtype_search_save_searched_value($search)
+    {
+        if ($search && get_option('growtype_search_save_searched_values', 'on') === 'on') {
+            global $wpdb;
+            $table_name = $wpdb->prefix . 'growtype_search_stats';
+
+            $user_id = is_user_logged_in() ? get_current_user_id() : 0;
+            $current_time = current_time('mysql');
+
+            // Try to get existing record
+            $existing = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM $table_name WHERE search_query = %s",
+                $search
+            ));
+
+            if ($existing) {
+                $user_ids = !empty($existing->user_ids) ? explode(',', $existing->user_ids) : [];
+                if ($user_id && !in_array($user_id, $user_ids)) {
+                    $user_ids[] = $user_id;
+                }
+                
+                $wpdb->update(
+                    $table_name,
+                    [
+                        'count' => $existing->count + 1,
+                        'user_ids' => implode(',', $user_ids),
+                        'last_searched' => $current_time
+                    ],
+                    ['id' => $existing->id]
+                );
+            } else {
+                $wpdb->insert(
+                    $table_name,
+                    [
+                        'search_query' => $search,
+                        'count' => 1,
+                        'user_ids' => $user_id ? (string)$user_id : '',
+                        'last_searched' => $current_time
+                    ]
+                );
+            }
+        }
+    }
 }

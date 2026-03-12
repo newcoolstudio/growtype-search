@@ -3,7 +3,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       http://example.com
+ * @link       https://growtype.com
  * @since      1.0.0
  *
  * @package    Growtype_Search
@@ -18,10 +18,13 @@
  *
  * @package    Growtype_Search
  * @subpackage growtype_search/admin
- * @author     Your Name <email@example.com>
+ * @author     Growtype
  */
 class Growtype_Search_Admin
 {
+    const SETTINGS_DEFAULT_TAB = 'general';
+
+    const SETTINGS_PAGE_NAME = 'growtype-search-settings';
 
     /**
      * The ID of this plugin.
@@ -58,12 +61,10 @@ class Growtype_Search_Admin
         $this->version = $version;
 
         if (is_admin()) {
-//            add_action('admin_menu', array ($this, 'add_custom_options_page'));
-
             /**
              * Load methods
              */
-            $this->load_methods();
+            add_action('init', array($this, 'add_pages'));
         }
     }
 
@@ -87,7 +88,7 @@ class Growtype_Search_Admin
          * class.
          */
 
-        wp_enqueue_style($this->growtype_search, plugin_dir_url(__FILE__) . 'css/growtype-search-admin.css', array (), $this->version, 'all');
+        wp_enqueue_style($this->growtype_search, plugin_dir_url(__FILE__) . 'css/growtype-search-admin.css', array(), $this->version, 'all');
 
     }
 
@@ -111,107 +112,19 @@ class Growtype_Search_Admin
          * class.
          */
 
-        wp_enqueue_script($this->growtype_search, plugin_dir_url(__FILE__) . 'js/growtype-search-admin.js', array ('jquery'), $this->version, false);
-    }
-
-    /**
-     * Register the options page with the Wordpress menu.
-     */
-    function add_custom_options_page()
-    {
-        add_options_page(
-            'Growtype - Video',
-            'Growtype - Video',
-            'manage_options',
-            'growtype-search-settings',
-            array ($this, 'growtype_search_settings'),
-            1
-        );
-    }
-
-    /**
-     * @param $current
-     * @return void
-     */
-    function growtype_search_settings_tabs($current = 'login')
-    {
-        $tabs['general'] = 'General';
-
-        if (class_exists('woocompress')) {
-            $tabs['woocommerce'] = 'Woocommerce';
-        }
-
-        echo '<div id="icon-themes" class="icon32"><br></div>';
-        echo '<h2 class="nav-tab-wrapper">';
-        foreach ($tabs as $tab => $name) {
-            $class = ($tab == $current) ? ' nav-tab-active' : '';
-            echo "<a class='nav-tab$class' href='?page=growtype-search-settings&tab=$tab'>$name</a>";
-
-        }
-        echo '</h2>';
-    }
-
-    /**
-     * @return void
-     */
-    function growtype_search_settings()
-    {
-        if (isset($_GET['page']) && $_GET['page'] == 'growtype-search-settings') {
-            ?>
-
-            <div class="wrap">
-
-                <h1>Growtype - Video settings</h1>
-
-                <?php
-                if (isset($_GET['updated']) && 'true' == esc_attr($_GET['updated'])) {
-                    echo '<div class="updated" ><p>Theme Settings Updated.</p></div>';
-                }
-
-                if (isset ($_GET['tab'])) {
-                    $this->growtype_search_settings_tabs($_GET['tab']);
-                } else {
-                    $this->growtype_search_settings_tabs();
-                }
-                ?>
-
-                <form id="growtype_search_main_settings" method="post" action="options.php">
-                    <?php
-
-                    if (isset ($_GET['tab'])) {
-                        $tab = $_GET['tab'];
-                    } else {
-                        $tab = 'general';
-                    }
-
-                    switch ($tab) {
-                        case 'general':
-                            settings_fields('growtype_search_settings_general');
-
-                            echo '<table class="form-table">';
-                            do_settings_fields('growtype-search-settings', 'growtype_search_settings_general');
-                            echo '</table>';
-
-                            break;
-                    }
-
-                    if ($tab !== 'examples') {
-                        submit_button();
-                    }
-
-                    ?>
-                </form>
-            </div>
-
-            <?php
-        }
+        wp_enqueue_script($this->growtype_search, plugin_dir_url(__FILE__) . 'js/growtype-search-admin.js', array('jquery'), $this->version, false);
     }
 
     /**
      * Load the required methods for this plugin.
      *
      */
-    private function load_methods()
+    public function add_pages()
     {
+        /**
+         * Plugin settings
+         */
+        require GROWTYPE_SEARCH_PATH . '/admin/pages/growtype-search-admin-pages.php';
+        new Growtype_Search_Admin_Pages();
     }
 }

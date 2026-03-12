@@ -15,7 +15,15 @@ function growtype_search_ajax_callback()
 
     $search = isset($_REQUEST['search']['s']) ? sanitize_text_field($_REQUEST['search']['s']) : '';
 
+    /**
+     * Save searched values - only if search is at least 2 chars
+     */
+    if (strlen($search) >= 2) {
+        growtype_search_save_searched_value($search);
+    }
+
     $settings_static = isset($_REQUEST['settings_static']) && is_array($_REQUEST['settings_static'])
+
         ? array_map('sanitize_text_field', $_REQUEST['settings_static'])
         : [];
     $lang = isset($_REQUEST['lang']) ? sanitize_text_field($_REQUEST['lang']) : (class_exists('QTX_Translator') ? qtranxf_getLanguage() : 'en');

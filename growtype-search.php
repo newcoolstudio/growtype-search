@@ -8,17 +8,17 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              http://growtype.com/
+ * @link              https://growtype.com/
  * @since             1.0.0
  * @package           growtype_search
  *
  * @wordpress-plugin
  * Plugin Name:       Growtype - Search
- * Plugin URI:        http://growtype.com/
+ * Plugin URI:        https://growtype.com/
  * Description:       Advanced search functionality for modern websites.
  * Version:           1.0.0
  * Author:            Growtype
- * Author URI:        http://growtype.com/
+ * Author URI:        https://growtype.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       growtype-search

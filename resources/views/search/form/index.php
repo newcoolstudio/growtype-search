@@ -9,7 +9,7 @@
 
         <form class="growtype-search-form" role="search" method="get" action="<?php echo growtype_search_permalink() ?>">
             <?php do_action('growtype_search_form_after_open') ?>
-            <input type="text" value="<?php echo isset($_GET['s']) && !empty($_GET['s']) ? $_GET['s'] : '' ?>" name="s" class="growtype-search-input growtype-search-value" placeholder="<?php echo $search_input_placeholder ?>"/>
+            <input type="text" value="<?php echo isset($_GET['s']) && !empty($_GET['s']) ? esc_attr(wp_unslash($_GET['s'])) : '' ?>" name="s" class="growtype-search-input growtype-search-value" placeholder="<?php echo esc_attr($search_input_placeholder) ?>"/>
             <?php echo growtype_search_include_view('search.form.actions.btn-search') ?>
         </form>
 

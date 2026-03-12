@@ -6,7 +6,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       http://example.com
+ * @link       https://growtype.com
  * @since      1.0.0
  *
  * @package    Growtype_Search
@@ -25,7 +25,7 @@
  * @since      1.0.0
  * @package    Growtype_Search
  * @subpackage growtype_search/includes
- * @author     Your Name <email@example.com>
+ * @author     Growtype
  */
 class Growtype_Search
 {
@@ -253,7 +253,21 @@ class Growtype_Search
      */
     public function run()
     {
+        $this->update_check();
         $this->loader->run();
+    }
+
+    /**
+     * Check if plugin update is required (e.g. to create missing tables)
+     */
+    private function update_check()
+    {
+        $saved_version = get_option('growtype_search_version', '1.0.0');
+        if (version_compare($saved_version, GROWTYPE_SEARCH_VERSION, '<')) {
+            require_once GROWTYPE_SEARCH_PATH . 'includes/class-growtype-search-activator.php';
+            Growtype_Search_Activator::activate();
+            update_option('growtype_search_version', GROWTYPE_SEARCH_VERSION);
+        }
     }
 
     /**
