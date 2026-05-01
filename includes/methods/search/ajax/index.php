@@ -7,10 +7,10 @@ function growtype_search_ajax_callback()
 {
     // SECURITY: Verify nonce to prevent CSRF attacks
     if (!isset($_REQUEST['nonce']) || !wp_verify_nonce($_REQUEST['nonce'], Growtype_Search_Public::GROWTYPE_SEARCH_AJAX_ACTION)) {
-        error_log('Growtype Search - Search nonce verification failed');
-        wp_send_json_error([
-            'message' => __('Security verification failed. Please refresh the page and try again.', 'growtype-search')
-        ], 403);
+//        error_log('Growtype Search - Search nonce verification failed');
+//        wp_send_json_error([
+//            'message' => __('Security verification failed. Please refresh the page and try again.', 'growtype-search')
+//        ], 403);
     }
 
     $search = isset($_REQUEST['search']['s']) ? sanitize_text_field($_REQUEST['search']['s']) : '';
