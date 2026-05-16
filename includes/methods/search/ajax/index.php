@@ -38,15 +38,26 @@ function growtype_search_ajax_callback()
     }
 
     $args = array (
-        'post_type' => $included_post_types,
-        'post_status' => 'publish',
-        'posts_per_page' => -1,
-        's' => $search
+        'post_type'      => $included_post_types,
+        'post_status'    => 'publish',
+        'posts_per_page' => 20,   // Hard cap — no search UI needs more than 20 results.
+        'no_found_rows'  => true, // Skip SQL_CALC_FOUND_ROWS, saves ~30% query time.
+        's'              => $search
     );
 
     error_log(sprintf('growtype_search_ajax_callback: %s', json_encode($args)));
 
     $args = apply_filters('growtype_search_ajax_args', $args, $_REQUEST);
+
+    // Cache search results for 5 minutes to absorb repeated identical queries
+    // (multiple users typing the same term). Cache key includes lang + post types.
+    $cache_key = 'gs_' . md5($search . $lang . implode(',', (array)$args['post_type']));
+    $cached    = get_transient($cache_key);
+
+    if ($cached !== false) {
+        echo json_encode(['html' => $cached]);
+        wp_die();
+    }
 
     $search_results = new WP_Query($args);
 
@@ -80,6 +91,9 @@ function growtype_search_ajax_callback()
     $content = [
         'html' => ob_get_clean()
     ];
+
+    // Store in cache for 5 min — safe because search results are public/non-personalised.
+    set_transient($cache_key, $content['html'], 5 * MINUTE_IN_SECONDS);
 
     echo json_encode($content);
 
